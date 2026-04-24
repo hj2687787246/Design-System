@@ -47,8 +47,9 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
+import type { LoginForm } from '../types/login'
 
-const loginForm = reactive({
+const loginForm = reactive<LoginForm>({
   account: '',
   password: '',
   remember: true
