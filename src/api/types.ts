@@ -56,16 +56,6 @@ export interface ShopVO {
   updatedAt: string
 }
 
-export interface ShopCustomerVO {
-  id: number
-  shopId: number
-  customerName: string
-  photoCount: number
-  remark?: string
-  createdAt: string
-  updatedAt: string
-}
-
 export interface ProductTypeFieldVO {
   id: number
   productTypeId: number

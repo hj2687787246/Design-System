@@ -227,7 +227,6 @@ import type {
   CreateOrderMerchantOption,
 } from '../types/CreateOrder'
 import type { OrderId } from '../types/AllOrders'
-import { getPopconfirmWidth } from '../utils/popconfirmWidth'
 import { enforcePriceInput, normalizePriceNumber, PRICE_DECIMAL_PLACES, preventInvalidPricePaste } from '../utils/price'
 
 type CreateOrderMode = 'create' | 'edit'

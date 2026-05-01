@@ -1,5 +1,5 @@
 import request from '../libs/request'
-import type { CommonPageParams, PageResponse, ShopCustomerVO, ShopVO } from './types'
+import type { CommonPageParams, PageResponse, ShopVO } from './types'
 
 export interface ShopListParams extends CommonPageParams {
   keyword?: string
@@ -9,16 +9,6 @@ export interface SaveShopParams {
   shopName: string
   ownerName?: string
   contactPhone?: string
-  remark?: string
-}
-
-export interface ShopCustomerListParams extends CommonPageParams {
-  keyword?: string
-}
-
-export interface SaveShopCustomerParams {
-  customerName: string
-  photoCount: number
   remark?: string
 }
 
@@ -50,36 +40,5 @@ export const updateShopApi = (id: number, data: SaveShopParams) =>
 export const deleteShopApi = (id: number) =>
   request<boolean>({
     url: `/shops/${id}`,
-    method: 'DELETE',
-  })
-
-/** 获取指定商户下的客户分页列表。 */
-export const getShopCustomerListApi = (shopId: number, params?: ShopCustomerListParams) =>
-  request<PageResponse<ShopCustomerVO>>({
-    url: `/shops/${shopId}/customers`,
-    method: 'GET',
-    params,
-  }) as unknown as Promise<PageResponse<ShopCustomerVO>>
-
-/** 为指定商户创建客户信息。 */
-export const createShopCustomerApi = (shopId: number, data: SaveShopCustomerParams) =>
-  request<ShopCustomerVO>({
-    url: `/shops/${shopId}/customers`,
-    method: 'POST',
-    data,
-  })
-
-/** 编辑商户客户信息。 */
-export const updateShopCustomerApi = (id: number, data: SaveShopCustomerParams) =>
-  request<ShopCustomerVO>({
-    url: `/shop-customers/${id}`,
-    method: 'PUT',
-    data,
-  })
-
-/** 删除商户客户，按接口文档封装；页面是否开放入口按需求规则控制。 */
-export const deleteShopCustomerApi = (id: number) =>
-  request<boolean>({
-    url: `/shop-customers/${id}`,
     method: 'DELETE',
   })
