@@ -107,7 +107,6 @@
                   inputmode="decimal"
                   placeholder="请输入默认接单价"
                   @change="item.acceptPrice = normalizePriceNumber($event)"
-                  @input.capture="enforcePriceInput"
                   @paste.capture="preventInvalidPricePaste"
                 />
               </el-form-item>
@@ -122,7 +121,6 @@
                   inputmode="decimal"
                   placeholder="请输入默认派单价"
                   @change="item.dispatchPrice = normalizePriceNumber($event)"
-                  @input.capture="enforcePriceInput"
                   @paste.capture="preventInvalidPricePaste"
                 />
               </el-form-item>
@@ -169,7 +167,7 @@ import type {
   MerchantRecord,
 } from '../types/MasterData'
 import { getPopconfirmWidth } from '../utils/popconfirmWidth'
-import { enforcePriceInput, normalizePriceNumber, PRICE_DECIMAL_PLACES, preventInvalidPricePaste, toPricePayload } from '../utils/price'
+import { normalizePriceNumber, PRICE_DECIMAL_PLACES, preventInvalidPricePaste, toPricePayload } from '../utils/price'
 
 type MerchantDialogMode = 'create' | 'edit' | 'detail'
 
@@ -193,14 +191,15 @@ const filters = reactive<MasterDataFilters>({
 })
 
 const requiredRule = (message: string, trigger: 'blur' | 'change' = 'blur'): FormItemRule[] => [{ required: true, whitespace: true, message, trigger }]
+const requiredValueRule = (message: string, trigger: 'blur' | 'change' = 'blur'): FormItemRule[] => [{ required: true, message, trigger }]
 
 const merchantRules: FormRules<MerchantDialogForm> = {
   merchantName: requiredRule('请输入商户名称'),
 }
 
 const photoTypeNameRules = requiredRule('请输入照片类型')
-const acceptPriceRules = requiredRule('请输入默认接单价', 'change')
-const dispatchPriceRules = requiredRule('请输入默认派单价', 'change')
+const acceptPriceRules = requiredValueRule('请输入默认接单价', 'change')
+const dispatchPriceRules = requiredValueRule('请输入默认派单价', 'change')
 
 const createId = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`
 

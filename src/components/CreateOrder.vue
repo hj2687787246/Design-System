@@ -38,7 +38,6 @@
           inputmode="decimal"
           placeholder="请输入接单价"
           @change="singleForm.acceptUnitPrice = normalizePriceNumber($event)"
-          @input.capture="enforcePriceInput"
           @paste.capture="preventInvalidPricePaste"
         />
       </el-form-item>
@@ -53,7 +52,6 @@
           inputmode="decimal"
           placeholder="请输入派单价"
           @change="singleForm.dispatchUnitPrice = normalizePriceNumber($event)"
-          @input.capture="enforcePriceInput"
           @paste.capture="preventInvalidPricePaste"
         />
       </el-form-item>
@@ -145,7 +143,6 @@
                 disabled-scientific
                 inputmode="decimal"
                 @change="row.acceptUnitPrice = normalizePriceNumber($event)"
-                @input.capture="enforcePriceInput"
                 @paste.capture="preventInvalidPricePaste"
               />
               <div v-for="error in getFieldErrors($index, 'acceptUnitPrice')" :key="error" class="field-error-tip">{{ error }}</div>
@@ -165,7 +162,6 @@
                 disabled-scientific
                 inputmode="decimal"
                 @change="row.dispatchUnitPrice = normalizePriceNumber($event)"
-                @input.capture="enforcePriceInput"
                 @paste.capture="preventInvalidPricePaste"
               />
               <div v-for="error in getFieldErrors($index, 'dispatchUnitPrice')" :key="error" class="field-error-tip">{{ error }}</div>
@@ -227,7 +223,7 @@ import type {
   CreateOrderMerchantOption,
 } from '../types/CreateOrder'
 import type { OrderId } from '../types/AllOrders'
-import { enforcePriceInput, normalizePriceNumber, PRICE_DECIMAL_PLACES, preventInvalidPricePaste } from '../utils/price'
+import { normalizePriceNumber, PRICE_DECIMAL_PLACES, preventInvalidPricePaste } from '../utils/price'
 
 type CreateOrderMode = 'create' | 'edit'
 type BatchOrderRow = CreateOrderBatchRow
