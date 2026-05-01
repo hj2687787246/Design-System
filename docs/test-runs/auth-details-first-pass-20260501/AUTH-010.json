@@ -1,0 +1,14 @@
+﻿{
+    "case":  "AUTH-010",
+    "before":  {
+                   "beforeAriaLabel":  "显示密码",
+                   "beforeAriaPressed":  "false",
+                   "beforeType":  "password"
+               },
+    "after":  {
+                  "afterAriaLabel":  "隐藏密码",
+                  "afterAriaPressed":  "true",
+                  "afterType":  "text",
+                  "value":  "abc123"
+              }
+}

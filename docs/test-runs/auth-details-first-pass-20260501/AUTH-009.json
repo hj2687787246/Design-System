@@ -1,0 +1,13 @@
+﻿{
+  "afterLoginUrl": "http://127.0.0.1:5187/orders",
+  "case": "AUTH-009",
+  "remember": null,
+  "tokenPresent": true,
+  "user": {
+    "id": 1,
+    "realName": "超级管理员",
+    "role": "ADMIN",
+    "status": "ENABLED",
+    "username": "admin"
+  }
+}

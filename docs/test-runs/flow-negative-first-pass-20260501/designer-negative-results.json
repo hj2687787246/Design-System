@@ -1,0 +1,64 @@
+﻿{
+  "completeOtherDesignerOrder": {
+    "httpStatus": 403,
+    "json": {
+      "code": 403,
+      "data": null,
+      "message": "无权限"
+    },
+    "ok": false,
+    "text": "{\"code\":403,\"message\":\"无权限\",\"data\":null}"
+  },
+  "listAfter": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询设计师订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询设计师订单成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "listBefore": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询设计师订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询设计师订单成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "login": {
+    "code": 200,
+    "httpStatus": 200,
+    "message": "登录成功",
+    "ok": true,
+    "user": {
+      "id": 28,
+      "realName": "设计师强sir",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "shejishi"
+    }
+  },
+  "orderId": 21,
+  "orderNo": "QA_FLOW_NEG_20260501054402",
+  "runAt": "2026-04-30T21:44:39.811Z",
+  "validations": {
+    "completeOtherRejected": true,
+    "otherOrderNotVisible": true,
+    "shejishiLoginSuccess": true,
+    "stillNotVisible": true
+  }
+}

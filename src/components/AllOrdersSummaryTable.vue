@@ -1,25 +1,26 @@
 <template>
   <div class="orders-table-body">
     <div class="orders-table-scroll-region">
-      <el-table ref="tableRef" :data="orders" :row-key="getAllOrderSummarySelectionKey" border height="100%" stripe @selection-change="handleSelectionChange">
-      <el-table-column type="selection" reserve-selection width="52" />
-      <el-table-column align="center" label="序号" min-width="58" prop="index" />
-      <el-table-column label="商家名称" min-width="120" prop="merchant" />
-      <el-table-column label="订单数量" min-width="96" prop="orderCount" />
-      <el-table-column label="照片张数" min-width="96" prop="photoCount" />
-      <el-table-column label="接单总价" min-width="120" prop="receiveTotal" />
-      <el-table-column label="派单总价" min-width="120" prop="dispatchTotal" />
-      <el-table-column label="利润" min-width="120" prop="profit" />
-      <el-table-column label="订单时间" min-width="360" prop="orderedAt" />
-      <el-table-column label="操作" min-width="96" fixed="right">
-        <template #default>
-          <el-button class="summary-detail-button" link type="primary">详情</el-button>
-        </template>
+      <el-table ref="tableRef" v-loading="loading" :data="orders" :row-key="getAllOrderSummarySelectionKey" :cell-style="{ textAlign: 'center' }" :header-cell-style="{ textAlign: 'center' }" border height="100%" stripe @selection-change="handleSelectionChange">
+      <el-table-column type="selection" reserve-selection width="52" fixed="left" />
+      <el-table-column align="center" label="序号" width="58" prop="index" fixed="left" />
+      <el-table-column label="商家名称" prop="merchant" />
+      <el-table-column label="订单数量" prop="orderCount" />
+      <el-table-column label="照片张数" prop="photoCount" />
+      <el-table-column label="接单总价">
+        <template #default="{ row }: { row: AllOrderSummary }">{{ formatOrderStatNumber(row.receiveTotal) }}</template>
       </el-table-column>
+      <el-table-column label="派单总价">
+        <template #default="{ row }: { row: AllOrderSummary }">{{ formatOrderStatNumber(row.dispatchTotal) }}</template>
+      </el-table-column>
+      <el-table-column label="利润">
+        <template #default="{ row }: { row: AllOrderSummary }">{{ formatOrderStatNumber(row.profit) }}</template>
+      </el-table-column>
+      <el-table-column label="订单时间" prop="orderedAt" />
     </el-table>
     </div>
 
-    <div class="selection-summary-bar" :class="{ 'is-visible': hasSelectedOrders }">
+    <div v-if="hasSelectedOrders" class="selection-summary-bar is-visible">
       <span class="selection-summary-check" aria-hidden="true">✓</span>
       <span class="selection-summary-count">{{ selectedCountText }}</span>
       <span class="selection-summary-metric">订单数量 <strong>{{ formatOrderStatNumber(selectedStatValues.orderCount) }}</strong></span>
@@ -42,6 +43,7 @@ import { createSummaryStatValues, formatOrderStatNumber } from '../utils/allOrde
 const props = defineProps<{
   orders: AllOrderSummary[]
   selectedOrders: AllOrderSummary[]
+  loading?: boolean
 }>()
 
 const tableRef = ref<TableInstance>()

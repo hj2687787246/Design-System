@@ -2,9 +2,9 @@ import type { AllOrder, AllOrderSummary } from '../types/AllOrders'
 
 export type RowKeyGetter<T> = (row: T) => string | number
 
-export const getAllOrderSelectionKey = (order: Pick<AllOrder, 'orderNo'>) => order.orderNo
+export const getAllOrderSelectionKey = (order: Pick<AllOrder, 'id' | 'orderNo'>) => order.id || order.orderNo
 
-export const getAllOrderSummarySelectionKey = (order: Pick<AllOrderSummary, 'index'>) => order.index
+export const getAllOrderSummarySelectionKey = (order: Pick<AllOrderSummary, 'id' | 'index'>) => order.id || order.index
 
 export const getPagedRows = <T>(rows: T[], pageNo: number, pageSize: number): T[] => {
   const normalizedPageNo = Math.max(pageNo, 1)

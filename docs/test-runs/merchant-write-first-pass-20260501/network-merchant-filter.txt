@@ -1,0 +1,16 @@
+﻿[43488.132] POST http://127.0.0.1:5187/api/merchant-master/merchants/list (XHR) 200
+[43488.134] POST http://127.0.0.1:5187/api/merchant-master/merchants (Fetch) 200
+[43488.135] POST http://127.0.0.1:5187/api/merchant-master/merchants (Fetch) 200
+[43488.136] POST http://127.0.0.1:5187/api/merchant-master/merchants/list (Fetch) 200
+[43488.137] POST http://127.0.0.1:5187/api/merchant-master/merchants/list (Fetch) 200
+[43488.138] POST http://127.0.0.1:5187/api/merchant-master/merchants/edit-data (Fetch) 200
+[43488.139] PUT http://127.0.0.1:5187/api/merchant-master/merchants (Fetch) 200
+[43488.140] PUT http://127.0.0.1:5187/api/merchant-master/merchants (Fetch) 200
+[43488.141] PUT http://127.0.0.1:5187/api/merchant-master/merchants (Fetch) 200
+[43488.142] POST http://127.0.0.1:5187/api/merchant-master/merchants/edit-data (Fetch) 200
+[43488.143] POST http://127.0.0.1:5187/api/merchant-master/merchants/list (Fetch) 200
+[43488.145] POST http://127.0.0.1:5187/api/merchant-master/merchants/delete (Fetch) 200
+[43488.146] POST http://127.0.0.1:5187/api/merchant-master/merchants/delete (Fetch) 200
+[43488.147] POST http://127.0.0.1:5187/api/merchant-master/merchants/list (Fetch) 200
+[43488.148] POST http://127.0.0.1:5187/api/merchant-master/merchants/list (Fetch) 200
+[43488.182] POST http://127.0.0.1:5187/api/merchant-master/merchants/list (XHR) 200

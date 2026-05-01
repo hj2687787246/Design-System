@@ -1,0 +1,127 @@
+﻿{
+    "httpStatus":  200,
+    "json":  {
+                 "code":  200,
+                 "data":  {
+                              "designerNames":  [
+                                                    "设计师强sir",
+                                                    "diaodu",
+                                                    "UI浏览器测试设计师",
+                                                    "UI浏览器测试设计师",
+                                                    "UI设计师二号",
+                                                    "UI设计师一号"
+                                                ],
+                              "designers":  [
+                                                {
+                                                    "id":  28,
+                                                    "name":  "设计师强sir"
+                                                },
+                                                {
+                                                    "id":  27,
+                                                    "name":  "diaodu"
+                                                },
+                                                {
+                                                    "id":  25,
+                                                    "name":  "UI浏览器测试设计师"
+                                                },
+                                                {
+                                                    "id":  24,
+                                                    "name":  "UI浏览器测试设计师"
+                                                },
+                                                {
+                                                    "id":  23,
+                                                    "name":  "UI设计师二号"
+                                                },
+                                                {
+                                                    "id":  22,
+                                                    "name":  "UI设计师一号"
+                                                }
+                                            ],
+                              "merchants":  [
+                                                "何永杰专卖店",
+                                                "测试商户957",
+                                                "测试12",
+                                                "强sir传媒"
+                                            ],
+                              "photoTypes":  [
+                                                 "咕咕嘎嘎",
+                                                 "嘻嘻哈哈",
+                                                 "婚纱",
+                                                 "测试照片类型1",
+                                                 "测试照片类型2",
+                                                 "精修",
+                                                 "精修222"
+                                             ],
+                              "productTypes":  [
+                                                   {
+                                                       "name":  "咕咕嘎嘎"
+                                                   },
+                                                   {
+                                                       "name":  "嘻嘻哈哈"
+                                                   },
+                                                   {
+                                                       "name":  "婚纱"
+                                                   },
+                                                   {
+                                                       "name":  "测试照片类型1"
+                                                   },
+                                                   {
+                                                       "name":  "测试照片类型2"
+                                                   },
+                                                   {
+                                                       "name":  "精修"
+                                                   },
+                                                   {
+                                                       "name":  "精修222"
+                                                   }
+                                               ],
+                              "shops":  [
+                                            {
+                                                "id":  10,
+                                                "name":  "何永杰专卖店"
+                                            },
+                                            {
+                                                "id":  8,
+                                                "name":  "测试商户957"
+                                            },
+                                            {
+                                                "id":  5,
+                                                "name":  "测试12"
+                                            },
+                                            {
+                                                "id":  3,
+                                                "name":  "强sir传媒"
+                                            }
+                                        ],
+                              "statuses":  [
+                                               {
+                                                   "label":  "未派单",
+                                                   "value":  "UNASSIGNED"
+                                               },
+                                               {
+                                                   "label":  "未完工",
+                                                   "value":  "UNCOMPLETED"
+                                               },
+                                               {
+                                                   "label":  "待审核",
+                                                   "value":  "PENDING_REVIEW"
+                                               },
+                                               {
+                                                   "label":  "已完工",
+                                                   "value":  "COMPLETED"
+                                               },
+                                               {
+                                                   "label":  "问题件",
+                                                   "value":  "PROBLEM"
+                                               },
+                                               {
+                                                   "label":  "其他",
+                                                   "value":  "OTHER"
+                                               }
+                                           ]
+                          },
+                 "message":  "查询筛选项成功"
+             },
+    "ok":  true,
+    "text":  "{\"code\":200,\"message\":\"查询筛选项成功\",\"data\":{\"shops\":[{\"id\":10,\"name\":\"何永杰专卖店\"},{\"id\":8,\"name\":\"测试商户957\"},{\"id\":5,\"name\":\"测试12\"},{\"id\":3,\"name\":\"强sir传媒\"}],\"productTypes\":[{\"name\":\"咕咕嘎嘎\"},{\"name\":\"嘻嘻哈哈\"},{\"name\":\"婚纱\"},{\"name\":\"测试照片类型1\"},{\"name\":\"测试照片类型2\"},{\"name\":\"精修\"},{\"name\":\"精修222\"}],\"statuses\":[{\"value\":\"UNASSIGNED\",\"label\":\"未派单\"},{\"value\":\"UNCOMPLETED\",\"label\":\"未完工\"},{\"value\":\"PENDING_REVIEW\",\"label\":\"待审核\"},{\"value\":\"COMPLETED\",\"label\":\"已完工\"},{\"value\":\"PROBLEM\",\"label\":\"问题件\"},{\"value\":\"OTHER\",\"label\":\"其他\"}],\"designers\":[{\"id\":28,\"name\":\"设计师强sir\"},{\"id\":27,\"name\":\"diaodu\"},{\"id\":25,\"name\":\"UI浏览器测试设计师\"},{\"id\":24,\"name\":\"UI浏览器测试设计师\"},{\"id\":23,\"name\":\"UI设计师二号\"},{\"id\":22,\"name\":\"UI设计师一号\"}],\"merchants\":[\"何永杰专卖店\",\"测试商户957\",\"测试12\",\"强sir传媒\"],\"photoTypes\":[\"咕咕嘎嘎\",\"嘻嘻哈哈\",\"婚纱\",\"测试照片类型1\",\"测试照片类型2\",\"精修\",\"精修222\"],\"designerNames\":[\"设计师强sir\",\"diaodu\",\"UI浏览器测试设计师\",\"UI浏览器测试设计师\",\"UI设计师二号\",\"UI设计师一号\"]}}"
+}

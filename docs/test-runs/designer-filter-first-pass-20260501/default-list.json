@@ -1,0 +1,44 @@
+﻿{
+    "httpStatus":  200,
+    "json":  {
+                 "code":  200,
+                 "data":  {
+                              "pageNo":  1,
+                              "pageSize":  15,
+                              "records":  [
+                                              {
+                                                  "completedAt":  "",
+                                                  "customer":  "abccd",
+                                                  "designer":  "设计师强sir",
+                                                  "id":  17,
+                                                  "merchant":  "何永杰专卖店",
+                                                  "orderNo":  "123321",
+                                                  "orderedAt":  "2026-05-01 02:48:08",
+                                                  "photoCount":  1,
+                                                  "photoType":  "婚纱",
+                                                  "remark":  "123321",
+                                                  "status":  "未完工",
+                                                  "statusClass":  "blue"
+                                              },
+                                              {
+                                                  "completedAt":  "",
+                                                  "customer":  "测试客户2",
+                                                  "designer":  "设计师强sir",
+                                                  "id":  13,
+                                                  "merchant":  "测试商户957",
+                                                  "orderNo":  "1",
+                                                  "orderedAt":  "2026-04-30 22:40:04",
+                                                  "photoCount":  3,
+                                                  "photoType":  "测试照片类型1",
+                                                  "remark":  "备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1",
+                                                  "status":  "问题件",
+                                                  "statusClass":  ""
+                                              }
+                                          ],
+                              "total":  2
+                          },
+                 "message":  "查询设计师订单成功"
+             },
+    "ok":  true,
+    "text":  "{\"code\":200,\"message\":\"查询设计师订单成功\",\"data\":{\"records\":[{\"id\":17,\"merchant\":\"何永杰专卖店\",\"photoType\":\"婚纱\",\"status\":\"未完工\",\"designer\":\"设计师强sir\",\"orderNo\":\"123321\",\"photoCount\":1,\"customer\":\"abccd\",\"remark\":\"123321\",\"orderedAt\":\"2026-05-01 02:48:08\",\"completedAt\":\"\",\"statusClass\":\"blue\"},{\"id\":13,\"merchant\":\"测试商户957\",\"photoType\":\"测试照片类型1\",\"status\":\"问题件\",\"designer\":\"设计师强sir\",\"orderNo\":\"1\",\"photoCount\":3,\"customer\":\"测试客户2\",\"remark\":\"备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1\",\"orderedAt\":\"2026-04-30 22:40:04\",\"completedAt\":\"\",\"statusClass\":\"\"}],\"total\":2,\"pageNo\":1,\"pageSize\":15}}"
+}

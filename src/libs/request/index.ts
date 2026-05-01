@@ -60,6 +60,10 @@ const isRefreshRequest = (config?: AxiosRequestConfig) => {
   return Boolean(config?.url?.includes('/auth/refresh'))
 }
 
+const shouldTryRefreshToken = (config?: RequestConfig) => {
+  return Boolean(config && config.retryOnUnauthorized !== false && !config.skipAuth && !isRefreshRequest(config))
+}
+
 const redirectToLogin = () => {
   clearAuthStorage()
 
@@ -91,7 +95,7 @@ const refreshAccessToken = async () => {
     throw new RequestError('登录已过期，请重新登录', 401, 401)
   }
 
-  const response = await axios.post<ApiResult<{ accessToken: string; refreshToken: string }>>(
+  const response = await axios.post<ApiResult<{ accessToken: string; refreshToken?: string }>>(
     `${baseURL}/auth/refresh`,
     { refreshToken },
     { timeout: 15000 },
@@ -101,7 +105,17 @@ const refreshAccessToken = async () => {
     throw new RequestError(response.data.message || '刷新登录状态失败', response.data.code, response.status, response.data)
   }
 
-  setTokens(response.data.data.accessToken, response.data.data.refreshToken)
+  setTokens(response.data.data.accessToken, response.data.data.refreshToken || refreshToken)
+}
+
+const retryRequestAfterRefresh = async (config: RequestConfig) => {
+  refreshTask ||= refreshAccessToken().finally(() => {
+    refreshTask = null
+  })
+
+  await refreshTask
+  config.retryOnUnauthorized = false
+  return service(config)
 }
 
 service.interceptors.request.use(
@@ -122,7 +136,7 @@ service.interceptors.request.use(
 )
 
 service.interceptors.response.use(
-  (response): any => {
+  async (response): Promise<any> => {
     const config = response.config as RequestConfig
 
     if (config.rawResponse) {
@@ -132,6 +146,15 @@ service.interceptors.response.use(
     const result = response.data as ApiResult
 
     if (result?.code === LOGIN_EXPIRED_CODE) {
+      if (shouldTryRefreshToken(config)) {
+        try {
+          return await retryRequestAfterRefresh(config)
+        } catch (refreshError) {
+          redirectToLogin()
+          throw refreshError
+        }
+      }
+
       redirectToLogin()
       throw new RequestError(result?.message || '登录已过期，请重新登录', LOGIN_EXPIRED_CODE, response.status, result)
     }
@@ -144,22 +167,13 @@ service.interceptors.response.use(
   },
   async (error: AxiosError<ApiResult>) => {
     const config = error.config as RequestConfig | undefined
-    const shouldTryRefresh =
-      error.response?.status === 401 &&
-      config?.retryOnUnauthorized !== false &&
-      !config?.skipAuth &&
-      !isRefreshRequest(config)
+    const shouldTryRefresh = error.response?.status === 401 && shouldTryRefreshToken(config)
 
     if (shouldTryRefresh && config) {
       try {
-        refreshTask ||= refreshAccessToken().finally(() => {
-          refreshTask = null
-        })
-        await refreshTask
-        config.retryOnUnauthorized = false
-        return service(config)
+        return await retryRequestAfterRefresh(config)
       } catch (refreshError) {
-        clearAuthStorage()
+        redirectToLogin()
         return Promise.reject(refreshError)
       }
     }
@@ -167,7 +181,7 @@ service.interceptors.response.use(
     if (error.response?.data?.code === LOGIN_EXPIRED_CODE) {
       redirectToLogin()
     } else if (error.response?.status === 401) {
-      clearAuthStorage()
+      redirectToLogin()
     }
 
     if (config?.skipErrorHandler) {

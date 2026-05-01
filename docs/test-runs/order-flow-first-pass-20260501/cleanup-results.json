@@ -1,0 +1,128 @@
+﻿{
+  "deleteMerchant": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除商户成功\",\"data\":true}"
+  },
+  "deleteOrder": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除订单成功\",\"data\":true}"
+  },
+  "listAfterOrderDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "listBeforeDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "2026-05-01 05:39:17",
+            "customer": "QA流程客户_20260501053604",
+            "designer": "设计师强sir",
+            "dispatchPrice": 6.67,
+            "dispatchTotal": 13.33,
+            "id": 19,
+            "index": 1,
+            "merchant": "QA流程商户_20260501053604",
+            "orderNo": "QA_FLOW_20260501053604",
+            "orderedAt": "2026-05-01 05:36:00",
+            "photoCount": 2,
+            "photoType": "QA流程类型_20260501053604",
+            "receivePrice": 11.11,
+            "receiveTotal": 22.22,
+            "remark": "QA flow remark",
+            "status": "已完工"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[{\"id\":19,\"merchant\":\"QA流程商户_20260501053604\",\"photoType\":\"QA流程类型_20260501053604\",\"status\":\"已完工\",\"designer\":\"设计师强sir\",\"orderNo\":\"QA_FLOW_20260501053604\",\"photoCount\":2,\"customer\":\"QA流程客户_20260501053604\",\"remark\":\"QA flow remark\",\"orderedAt\":\"2026-05-01 05:36:00\",\"completedAt\":\"2026-05-01 05:39:17\",\"index\":1,\"receivePrice\":11.11,\"receiveTotal\":22.22,\"dispatchPrice\":6.67,\"dispatchTotal\":13.33}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "merchantAfterDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "merchantBeforeDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:36:24",
+            "id": 13,
+            "merchantName": "QA流程商户_20260501053604",
+            "photoTypes": [
+              {
+                "acceptPrice": "11.11",
+                "dispatchPrice": "6.67",
+                "id": 28,
+                "photoType": "QA流程类型_20260501053604"
+              }
+            ]
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[{\"id\":13,\"merchantName\":\"QA流程商户_20260501053604\",\"photoTypes\":[{\"id\":28,\"photoType\":\"QA流程类型_20260501053604\",\"acceptPrice\":\"11.11\",\"dispatchPrice\":\"6.67\"}],\"createdAt\":\"2026-05-01 05:36:24\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "merchantId": 13,
+  "merchantName": "QA流程商户_20260501053604",
+  "orderId": 19,
+  "orderNo": "QA_FLOW_20260501053604",
+  "runAt": "2026-04-30T21:39:29.787Z",
+  "validations": {
+    "merchantDeleteSuccess": true,
+    "merchantExistedBeforeCleanup": true,
+    "merchantRemoved": true,
+    "orderDeleteSuccess": true,
+    "orderExistedBeforeCleanup": true,
+    "orderRemoved": true
+  }
+}

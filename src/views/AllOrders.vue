@@ -7,7 +7,7 @@
     <el-form class="orders-filter" :model="filters" inline>
       <el-form-item>
         <el-select v-model="filters.merchants" multiple collapse-tags placeholder="商户多选">
-          <el-option v-for="item in merchantOptions" :key="item" :label="item" :value="item" />
+          <el-option v-for="item in merchantOptions" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
 
@@ -19,13 +19,13 @@
 
       <el-form-item>
         <el-select v-model="filters.statuses" multiple collapse-tags placeholder="订单状态多选">
-          <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
+          <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
 
       <el-form-item>
         <el-select v-model="filters.designers" multiple collapse-tags placeholder="设计师多选">
-          <el-option v-for="item in designerOptions" :key="item" :label="item" :value="item" />
+          <el-option v-for="item in designerOptions" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
 
@@ -38,7 +38,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button class="query-button" type="primary" plain :icon="Search">查询</el-button>
+        <el-button class="query-button" type="primary" plain :icon="Search" @click="searchOrders">查询</el-button>
       </el-form-item>
 
       <el-form-item>
@@ -57,25 +57,42 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button class="export-button" plain :icon="Download" :disabled="!selectedRows.length">导出数据</el-button>
+        <el-button class="import-button" plain :icon="Upload" :loading="isImporting" @click="triggerImport">导入数据</el-button>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button class="export-button" plain :icon="Download" :disabled="!selectedRows.length || isExporting" :loading="isExporting" @click="exportSelectedRows">导出数据</el-button>
       </el-form-item>
     </el-form>
+    <input ref="importFileInput" class="import-file-input" type="file" accept=".xlsx" @change="handleImportFileChange" />
 
     <div class="table-panel">
       <AllOrdersDetailTable
         v-if="tableMode === 'detail'"
         :key="`detail-${tableRenderKey}`"
-        :group-orders="orders"
-        :orders="pagedOrders"
+        :designer-groups="designerGroups"
+        :group-loading="isGroupLoading"
+        :loading="isLoading"
+        :merchant-groups="merchantGroups"
+        :orders="orders"
         :selected-orders="selectedDetailRows"
+        @change-order-status="changeOrderStatus"
         @clear-selection="clearDetailSelection"
+        @approve-order="approveOrder"
+        @delete-order="deleteOrder"
+        @dispatch-order="dispatchOrder"
         @edit-order="openEditOrderDialog"
+        @open-designer-groups="loadDesignerGroups"
+        @open-merchant-groups="loadMerchantGroups"
+        @reject-order="rejectOrder"
+        @reassign-order="reassignOrder"
         @selection-change="handleDetailSelectionChange"
       />
       <AllOrdersSummaryTable
         v-else
         :key="`summary-${tableRenderKey}`"
-        :orders="pagedSummaryOrders"
+        :loading="isLoading"
+        :orders="summaryOrders"
         :selected-orders="selectedSummaryRows"
         @clear-selection="clearSummarySelection"
         @selection-change="handleSummarySelectionChange"
@@ -83,32 +100,89 @@
     </div>
 
     <footer class="pagination">
-      <el-pagination v-model:current-page="pagination.pageNo" v-model:page-size="pagination.pageSize" :page-sizes="[15, 30, 45, 60]" :pager-count="5" :total="currentTotal" layout="total, sizes, prev, pager, next, jumper" />
+      <el-pagination v-model:current-page="pagination.pageNo" v-model:page-size="pagination.pageSize" :page-sizes="[15, 30, 45, 60]" :pager-count="5" :total="currentTotal" layout="total, sizes, prev, pager, next, jumper" @current-change="loadCurrentTable" @size-change="handlePageSizeChange" />
     </footer>
 
-    <el-dialog v-model="isCreateOrderDialogVisible" :title="orderDialogTitle" class="create-order-dialog" width="860px" destroy-on-close>
-      <CreateOrder ref="createOrderRef" class="create-order-dialog-content" :initial-form="createOrderInitialForm" @confirm="handleCreateOrderConfirm" />
+    <el-dialog v-model="isCreateOrderDialogVisible" :title="orderDialogTitle" class="create-order-dialog" :width="orderDialogWidth" destroy-on-close>
+      <CreateOrder
+        ref="createOrderRef"
+        class="create-order-dialog-content"
+        :mode="orderDialogMode"
+        :import-preview="createOrderImportPreview"
+        :initial-form="createOrderInitialForm"
+        :merchant-options="merchantOptions"
+        @confirm="handleCreateOrderConfirm"
+        @submit-disabled-change="isCreateOrderSubmitDisabled = $event"
+      />
 
       <template #footer>
         <el-button @click="isCreateOrderDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="createOrderRef?.submit()">{{ orderDialogConfirmText }}</el-button>
+        <el-button type="primary" :disabled="isCreateOrderSubmitDisabled" @click="createOrderRef?.submit()">{{ orderDialogConfirmText }}</el-button>
+      </template>
+    </el-dialog>
+
+    <el-dialog v-model="dispatchDialogVisible" :title="dispatchDialogTitle" class="dispatch-dialog" width="360px" destroy-on-close>
+      <el-form label-width="72px">
+        <el-form-item label="设计师">
+          <el-select v-model="dispatchDesignerId" filterable placeholder="请选择设计师">
+            <el-option v-for="item in designerOptions" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <el-button @click="dispatchDialogVisible = false">取消</el-button>
+        <el-button type="primary" :disabled="!dispatchDesignerId" @click="confirmDispatchOrder">{{ dispatchConfirmText }}</el-button>
       </template>
     </el-dialog>
   </section>
 </template>
 
 <script setup lang="ts">
-import { DataAnalysis, Document, Download, Plus, Search } from '@element-plus/icons-vue'
-import { computed, reactive, ref } from 'vue'
+import { DataAnalysis, Document, Download, Plus, Search, Upload } from '@element-plus/icons-vue'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { ElMessage } from 'element-plus'
 import AllOrdersDetailTable from '../components/AllOrdersDetailTable.vue'
 import AllOrdersSummaryTable from '../components/AllOrdersSummaryTable.vue'
 import CreateOrder from '../components/CreateOrder.vue'
-import type { AllOrder, AllOrdersFilters, AllOrdersPagination, AllOrderSourceRow, AllOrderSummary } from '../types/AllOrders'
-import type { CreateOrderForm } from '../types/CreateOrder'
+import {
+  approveAdminOrderApi,
+  createAdminOrdersBatchApi,
+  deleteAdminOrderApi,
+  dispatchAdminOrderApi,
+  exportSelectedAdminOrdersApi,
+  getAdminOrderDesignerGroupsApi,
+  getAdminOrderListApi,
+  getAdminOrderShopGroupsApi,
+  getAdminOrderSummaryListApi,
+  getOrderFilterOptionsApi,
+  previewAdminOrdersImportApi,
+  rejectAdminOrderApi,
+  updateAdminOrderApi,
+  type AdminOrderImportPreviewVO,
+  type AdminOrderGroupVO,
+  type AdminOrderRecordVO,
+  type AdminOrderSummaryVO,
+} from '../api/adminOrders'
+import { assignOrderApi } from '../api/orders'
+import type { AllOrder, AllOrderGroup, AllOrdersFilters, AllOrdersPagination, AllOrderSummary, OrderId } from '../types/AllOrders'
+import type { CreateOrderBatchSubmit, CreateOrderForm } from '../types/CreateOrder'
 import { createTableModeSwitchOptions, type AllOrdersTableMode } from '../utils/allOrdersTableMode'
-import { getAllOrderSelectionKey, getAllOrderSummarySelectionKey, getPagedRows, mergePagedSelection } from '../utils/allOrdersSelection'
+import { getAllOrderSelectionKey, getAllOrderSummarySelectionKey, mergePagedSelection } from '../utils/allOrdersSelection'
+import { normalizePriceNumberOrZero, toPricePayload } from '../utils/price'
 
 type OrderDialogMode = 'create' | 'edit'
+type DispatchDialogMode = 'dispatch' | 'reassign'
+
+interface SelectOption {
+  id: OrderId
+  name: string
+}
+
+interface StatusOption {
+  value: string
+  label: string
+}
 
 const filters = reactive<AllOrdersFilters>({
   merchants: [],
@@ -126,103 +200,175 @@ const pagination = reactive<AllOrdersPagination>({
 
 const selectedDetailRows = ref<AllOrder[]>([])
 const selectedSummaryRows = ref<AllOrderSummary[]>([])
+const orders = ref<AllOrder[]>([])
+const summaryOrders = ref<AllOrderSummary[]>([])
+const merchantGroups = ref<AllOrderGroup[]>([])
+const designerGroups = ref<AllOrderGroup[]>([])
+const currentTotal = ref(0)
+const isLoading = ref(false)
+const isGroupLoading = ref(false)
+const isExporting = ref(false)
+const isImporting = ref(false)
 const tableMode = ref<AllOrdersTableMode>('detail')
 const tableRenderKey = ref(0)
 const isCreateOrderDialogVisible = ref(false)
+const dispatchDialogVisible = ref(false)
 const createOrderRef = ref<InstanceType<typeof CreateOrder>>()
+const importFileInput = ref<HTMLInputElement>()
 const orderDialogMode = ref<OrderDialogMode>('create')
+const dispatchDialogMode = ref<DispatchDialogMode>('dispatch')
+const dispatchTargetOrder = ref<AllOrder | null>(null)
+const dispatchDesignerId = ref<OrderId | undefined>()
 const orderDialogTitle = computed(() => (orderDialogMode.value === 'edit' ? '编辑订单' : '新建订单'))
 const orderDialogConfirmText = computed(() => (orderDialogMode.value === 'edit' ? '确认修改' : '确认添加'))
+const orderDialogWidth = computed(() => (orderDialogMode.value === 'edit' ? '860px' : '1400px'))
+const dispatchDialogTitle = computed(() => (dispatchDialogMode.value === 'reassign' ? '改派' : '派单'))
+const dispatchConfirmText = computed(() => (dispatchDialogMode.value === 'reassign' ? '改派' : '派单'))
 const tableModeSwitchOptions = computed(() => createTableModeSwitchOptions(tableMode.value))
 const selectedRows = computed(() => (tableMode.value === 'detail' ? selectedDetailRows.value : selectedSummaryRows.value))
+const isCreateOrderSubmitDisabled = ref(false)
 
 const getEmptyCreateOrderForm = (): CreateOrderForm => ({
+  id: undefined,
   merchantName: '',
+  shopId: undefined,
   customerInfo: '',
   photoType: '',
-  photoCount: '',
-  acceptUnitPrice: '',
-  dispatchUnitPrice: '',
+  photoCount: undefined,
+  acceptUnitPrice: undefined,
+  dispatchUnitPrice: undefined,
   orderNo: '',
   orderedAt: '',
+  status: '',
   remark: ''
 })
 
 const createOrderInitialForm = ref<CreateOrderForm>(getEmptyCreateOrderForm())
+const createOrderImportPreview = ref<AdminOrderImportPreviewVO | null>(null)
 
-const merchantOptions = ['云帆摄影', '木石电商', '星野婚礼', '青橙影像', '森白视觉', '北岸写真']
-const photoTypeOptions = ['精修', '抠图', '调色', '排版', '证件照', '产品修图']
-const statusOptions = ['未派单', '未完工', '待审核', '已完工', '问题件', '其他']
-const designerOptions = ['林设计', '陈设计', '周设计', '王设计', '何设计', '赵设计']
+const merchantOptions = ref<SelectOption[]>([])
+const photoTypeOptions = ref<string[]>([])
+const statusOptions = ref<StatusOption[]>([])
+const designerOptions = ref<SelectOption[]>([])
 
-const source: AllOrderSourceRow[] = [
-  ['云帆摄影', '精修', '未派单', '林设计', 'DD20260425001', 8, 12, 8, '李小姐', '加急处理', '2026-04-10 09:10:00'],
-  ['木石电商', '抠图', '未完工', '陈设计', 'DD20260425002', 11, 14, 9, '张先生', '保持肤色自然', '2026-04-11 09:11:00'],
-  ['星野婚礼', '调色', '待审核', '周设计', 'DD20260425003', 14, 16, 10, '王女士', '按样片风格', '2026-04-12 09:12:00'],
-  ['青橙影像', '排版', '已完工', '王设计', 'DD20260425004', 17, 18, 11, '赵先生', '客户待确认', '2026-04-13 09:13:00'],
-  ['森白视觉', '证件照', '问题件', '何设计', 'DD20260425005', 20, 12, 8, '刘女士', '周末前交付', '2026-04-14 09:14:00'],
-  ['北岸写真', '产品修图', '其他', '赵设计', 'DD20260425006', 23, 14, 9, '何先生', '加急处理', '2026-04-15 09:15:00'],
-  ['拾光电商', '精修', '未派单', '林设计', 'DD20260425007', 26, 16, 10, '李小姐', '保持肤色自然', '2026-04-16 09:16:00'],
-  ['鹿鸣影像', '抠图', '未完工', '陈设计', 'DD20260425008', 29, 18, 11, '张先生', '按样片风格', '2026-04-17 09:17:00'],
-  ['云帆摄影', '调色', '待审核', '周设计', 'DD20260425009', 32, 12, 8, '王女士', '客户待确认', '2026-04-18 09:18:00'],
-  ['木石电商', '排版', '已完工', '王设计', 'DD20260425010', 8, 14, 9, '赵先生', '周末前交付', '2026-04-19 09:19:00'],
-  ['星野婚礼', '证件照', '问题件', '何设计', 'DD20260425011', 11, 16, 10, '刘女士', '加急处理', '2026-04-20 09:20:00'],
-  ['青橙影像', '产品修图', '其他', '赵设计', 'DD20260425012', 14, 18, 11, '何先生', '保持肤色自然', '2026-04-21 09:21:00'],
-  ['森白视觉', '精修', '未派单', '林设计', 'DD20260425013', 17, 12, 8, '李小姐', '按样片风格', '2026-04-22 09:22:00'],
-  ['北岸写真', '抠图', '未完工', '陈设计', 'DD20260425014', 20, 14, 9, '张先生', '客户待确认', '2026-04-23 09:23:00'],
-  ['拾光电商', '调色', '待审核', '周设计', 'DD20260425015', 23, 16, 10, '王女士', '周末前交付', '2026-04-24 09:24:00'],
-  ['鹿鸣影像', '排版', '已完工', '王设计', 'DD20260425016', 26, 18, 11, '赵先生', '加急处理', '2026-04-25 09:25:00'],
-  ['云帆摄影', '证件照', '问题件', '何设计', 'DD20260425017', 29, 12, 8, '刘女士', '保持肤色自然', '2026-04-10 09:26:00']
-]
+const toNumber = (value: unknown) => {
+  if (value === undefined || value === null || value === '') return 0
 
-const getMockCompletedAt = (status: string, orderedAt: string) => (status === '已完工' ? orderedAt.replace('09:', '18:') : '')
+  const nextValue = Number(value)
+  return Number.isFinite(nextValue) ? nextValue : 0
+}
 
-const orders: AllOrder[] = source.map(([merchant, photoType, status, designer, orderNo, photoCount, receivePrice, dispatchPrice, customer, remark, orderedAt], index) => ({
-  index: index + 1,
-  merchant,
-  photoType,
-  status,
-  designer,
-  orderNo,
-  photoCount,
-  receivePrice,
-  receiveTotal: photoCount * receivePrice,
-  dispatchPrice,
-  dispatchTotal: photoCount * dispatchPrice,
-  customer,
-  remark,
-  orderedAt,
-  completedAt: getMockCompletedAt(status, orderedAt)
-}))
+const getErrorMessage = (error: unknown, fallback: string) => {
+  return error instanceof Error && error.message ? error.message : fallback
+}
 
-const summaryMerchants = ['云帆摄影', '木石电商', '星野婚礼', '青橙影像', '森白视觉', '北岸写真', '拾光电商', '鹿鸣影像']
-
-const summaryOrders: AllOrderSummary[] = Array.from({ length: 17 }, (_, index) => {
-  const receiveTotal = 4680 + index * 330
-  const dispatchTotal = 3160 + index * 260
-
-  return {
-    index: index + 1,
-    merchant: summaryMerchants[index % summaryMerchants.length],
-    orderCount: 18 + index * 2,
-    photoCount: 248 + index * 18,
-    receiveTotal,
-    dispatchTotal,
-    profit: receiveTotal - dispatchTotal,
-    orderedAt: `2026-04-${String(index + 1).padStart(2, '0')} 00:00:00`
-  }
+const normalizeOrder = (record: AdminOrderRecordVO, fallbackIndex: number): AllOrder => ({
+  id: record.id,
+  index: record.index ?? fallbackIndex,
+  shopId: record.shopId,
+  productTypeId: record.productTypeId,
+  merchant: record.merchant ?? record.shopName ?? '',
+  photoType: record.photoType ?? record.productTypeName ?? '',
+  statusCode: record.status,
+  status: record.statusName ?? record.status ?? '',
+  designerId: record.designerId ?? null,
+  designer: record.designer ?? record.designerName ?? '',
+  orderNo: record.orderNo,
+  photoCount: toNumber(record.photoCount),
+  receivePrice: normalizePriceNumberOrZero(record.receivePrice ?? record.acceptUnitPrice),
+  receiveTotal: normalizePriceNumberOrZero(record.receiveTotal ?? record.acceptTotalAmount),
+  dispatchPrice: normalizePriceNumberOrZero(record.dispatchPrice ?? record.dispatchUnitPrice),
+  dispatchTotal: normalizePriceNumberOrZero(record.dispatchTotal ?? record.dispatchTotalAmount),
+  customer: record.customer ?? record.customerInfo ?? '',
+  remark: record.remark ?? '',
+  orderedAt: record.orderedAt ?? '',
+  completedAt: record.completedAt ?? '',
 })
 
-const pagedOrders = computed(() => getPagedRows(orders, pagination.pageNo, pagination.pageSize))
-const pagedSummaryOrders = computed(() => getPagedRows(summaryOrders, pagination.pageNo, pagination.pageSize))
-const currentTotal = computed(() => (tableMode.value === 'detail' ? orders.length : summaryOrders.length))
+const normalizeSummary = (record: AdminOrderSummaryVO, fallbackIndex: number): AllOrderSummary => ({
+  id: record.id,
+  index: record.index ?? fallbackIndex,
+  shopId: record.shopId,
+  merchant: record.merchant ?? record.shopName ?? '',
+  orderCount: toNumber(record.orderCount),
+  photoCount: toNumber(record.photoCount),
+  receiveTotal: normalizePriceNumberOrZero(record.receiveTotal ?? record.acceptTotalAmount),
+  dispatchTotal: normalizePriceNumberOrZero(record.dispatchTotal ?? record.dispatchTotalAmount),
+  profit: normalizePriceNumberOrZero(record.profit ?? record.profitAmount),
+  orderedAt: record.orderedAt ?? record.orderTime ?? '',
+})
+
+const normalizeGroup = (group: AdminOrderGroupVO): AllOrderGroup => ({
+  groupId: group.groupId,
+  groupName: group.groupName ?? group.name ?? '未填写',
+  orders: (group.orders ?? []).map((order, index) => normalizeOrder(order, index + 1)),
+})
+
+const buildQuery = () => ({
+  pageNo: pagination.pageNo,
+  pageSize: pagination.pageSize,
+  shopIds: filters.merchants.length ? filters.merchants : undefined,
+  productTypeNames: filters.photoTypes.length ? filters.photoTypes : undefined,
+  statuses: filters.statuses.length ? filters.statuses : undefined,
+  designerIds: filters.designers.length ? filters.designers : undefined,
+  startTime: filters.dateRange?.[0] || undefined,
+  endTime: filters.dateRange?.[1] || undefined,
+  keyword: filters.keyword.trim() || undefined,
+})
+
+const loadFilterOptions = async () => {
+  try {
+    const options = await getOrderFilterOptionsApi()
+
+    merchantOptions.value = (options.shops ?? [])
+      .filter(item => item.id !== undefined && item.name)
+      .map(item => ({ id: item.id as OrderId, name: item.name as string }))
+    photoTypeOptions.value = (options.productTypes ?? []).map(item => item.name).filter((name): name is string => Boolean(name))
+    statusOptions.value = (options.statuses ?? [])
+      .filter(item => item.value && item.label)
+      .map(item => ({ value: item.value as string, label: item.label as string }))
+    designerOptions.value = (options.designers ?? [])
+      .filter(item => item.id !== undefined && item.name)
+      .map(item => ({ id: item.id as OrderId, name: item.name as string }))
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '筛选项加载失败'))
+  }
+}
+
+const loadDetailOrders = async () => {
+  const result = await getAdminOrderListApi(buildQuery())
+  orders.value = result.records.map((item, index) => normalizeOrder(item, (pagination.pageNo - 1) * pagination.pageSize + index + 1))
+  currentTotal.value = result.total
+}
+
+const loadSummaryOrders = async () => {
+  const result = await getAdminOrderSummaryListApi(buildQuery())
+  summaryOrders.value = result.records.map((item, index) => normalizeSummary(item, (pagination.pageNo - 1) * pagination.pageSize + index + 1))
+  currentTotal.value = result.total
+}
+
+const loadCurrentTable = async () => {
+  isLoading.value = true
+
+  try {
+    if (tableMode.value === 'detail') {
+      await loadDetailOrders()
+    } else {
+      await loadSummaryOrders()
+    }
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '订单列表加载失败'))
+  } finally {
+    isLoading.value = false
+  }
+}
 
 const handleDetailSelectionChange = (selection: AllOrder[]) => {
-  selectedDetailRows.value = mergePagedSelection(selectedDetailRows.value, selection, pagedOrders.value, getAllOrderSelectionKey)
+  selectedDetailRows.value = mergePagedSelection(selectedDetailRows.value, selection, orders.value, getAllOrderSelectionKey)
 }
 
 const handleSummarySelectionChange = (selection: AllOrderSummary[]) => {
-  selectedSummaryRows.value = mergePagedSelection(selectedSummaryRows.value, selection, pagedSummaryOrders.value, getAllOrderSummarySelectionKey)
+  selectedSummaryRows.value = mergePagedSelection(selectedSummaryRows.value, selection, summaryOrders.value, getAllOrderSummarySelectionKey)
 }
 
 const clearDetailSelection = () => {
@@ -246,35 +392,306 @@ const resetTableSwitchState = () => {
 const toggleTableMode = () => {
   tableMode.value = tableMode.value === 'detail' ? 'summary' : 'detail'
   resetTableSwitchState()
+  void loadCurrentTable()
 }
 
-const mapOrderToCreateOrderForm = (order: AllOrder): CreateOrderForm => ({
-  merchantName: order.merchant,
-  customerInfo: order.customer,
-  photoType: order.photoType,
-  photoCount: String(order.photoCount),
-  acceptUnitPrice: String(order.receivePrice),
-  dispatchUnitPrice: String(order.dispatchPrice),
-  orderNo: order.orderNo,
-  orderedAt: order.orderedAt,
-  remark: order.remark
-})
+const mapOrderToCreateOrderForm = (order: AllOrder): CreateOrderForm => {
+  const matchedMerchant = merchantOptions.value.find(item => item.id === order.shopId || item.name === order.merchant)
+
+  return {
+    id: order.id,
+    merchantName: matchedMerchant?.name ?? order.merchant,
+    shopId: matchedMerchant?.id ?? order.shopId,
+    productTypeId: order.productTypeId,
+    customerInfo: order.customer,
+    photoType: order.photoType,
+    photoCount: order.photoCount,
+    acceptUnitPrice: order.receivePrice,
+    dispatchUnitPrice: order.dispatchPrice,
+    orderNo: order.orderNo,
+    orderedAt: order.orderedAt,
+    status: order.statusCode || order.status,
+    remark: order.remark,
+  }
+}
 
 const openCreateOrderDialog = () => {
   orderDialogMode.value = 'create'
   createOrderInitialForm.value = getEmptyCreateOrderForm()
+  createOrderImportPreview.value = null
+  isCreateOrderSubmitDisabled.value = false
   isCreateOrderDialogVisible.value = true
 }
 
 const openEditOrderDialog = (order: AllOrder) => {
   orderDialogMode.value = 'edit'
   createOrderInitialForm.value = mapOrderToCreateOrderForm(order)
+  createOrderImportPreview.value = null
+  isCreateOrderSubmitDisabled.value = false
   isCreateOrderDialogVisible.value = true
 }
 
-const handleCreateOrderConfirm = (_form: CreateOrderForm) => {
-  isCreateOrderDialogVisible.value = false
+const buildOrderPayload = (form: CreateOrderForm) => ({
+  orderNo: form.orderNo,
+  merchantName: form.merchantName,
+  shopId: form.shopId,
+  productTypeId: form.productTypeId,
+  customerInfo: form.customerInfo,
+  photoType: form.photoType,
+  productTypeName: form.photoType,
+  photoCount: form.photoCount || 0,
+  acceptUnitPrice: toPricePayload(form.acceptUnitPrice) ?? 0,
+  dispatchUnitPrice: toPricePayload(form.dispatchUnitPrice) ?? 0,
+  orderedAt: form.orderedAt,
+  status: form.status || undefined,
+  remark: form.remark,
+})
+
+const isBatchSubmit = (form: CreateOrderForm | CreateOrderBatchSubmit): form is CreateOrderBatchSubmit => {
+  return 'orders' in form
 }
+
+const buildBatchCreatePayload = (form: CreateOrderBatchSubmit) => ({
+  merchantName: form.merchantName,
+  shopId: form.shopId,
+  photoType: form.photoType,
+  productTypeName: form.productTypeName,
+  productTypeId: form.productTypeId,
+  orders: form.orders.map(row => ({
+    orderNo: row.orderNo,
+    customerInfo: row.customerInfo,
+    photoCount: row.photoCount ?? 0,
+    acceptUnitPrice: toPricePayload(row.acceptUnitPrice) ?? 0,
+    dispatchUnitPrice: toPricePayload(row.dispatchUnitPrice) ?? 0,
+    orderedAt: row.orderedAt,
+    remark: row.remark,
+  })),
+})
+
+const handleCreateOrderConfirm = async (form: CreateOrderForm | CreateOrderBatchSubmit) => {
+  try {
+    if (!isBatchSubmit(form) && orderDialogMode.value === 'edit' && form.id !== undefined) {
+      await updateAdminOrderApi({
+        id: form.id,
+        ...buildOrderPayload(form),
+      })
+      ElMessage.success('订单修改成功')
+    } else if (isBatchSubmit(form)) {
+      await createAdminOrdersBatchApi(buildBatchCreatePayload(form))
+      ElMessage.success('订单创建成功')
+    } else {
+      throw new Error('订单数据不完整')
+    }
+
+    isCreateOrderDialogVisible.value = false
+    await loadCurrentTable()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '订单保存失败'))
+  }
+}
+
+const buildOrderPayloadFromRow = (order: AllOrder) => {
+  const matchedMerchant = merchantOptions.value.find(item => item.id === order.shopId || item.name === order.merchant)
+
+  return {
+    orderNo: order.orderNo,
+    merchantName: matchedMerchant?.name ?? order.merchant,
+    shopId: matchedMerchant?.id ?? order.shopId,
+    productTypeId: order.productTypeId,
+    customerInfo: order.customer,
+    photoType: order.photoType,
+    productTypeName: order.photoType,
+    photoCount: order.photoCount,
+    acceptUnitPrice: order.receivePrice,
+    dispatchUnitPrice: order.dispatchPrice,
+    orderedAt: order.orderedAt,
+    remark: order.remark,
+  }
+}
+
+const changeOrderStatus = async (order: AllOrder, status: string) => {
+  try {
+    await updateAdminOrderApi({
+      id: order.id,
+      ...buildOrderPayloadFromRow(order),
+      status,
+    })
+    ElMessage.success('状态修改成功')
+    await loadCurrentTable()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '状态修改失败'))
+  }
+}
+
+const searchOrders = () => {
+  pagination.pageNo = 1
+  selectedDetailRows.value = []
+  selectedSummaryRows.value = []
+  tableRenderKey.value += 1
+  void loadCurrentTable()
+}
+
+const handlePageSizeChange = () => {
+  pagination.pageNo = 1
+  void loadCurrentTable()
+}
+
+const deleteOrder = async (order: AllOrder) => {
+  try {
+    await deleteAdminOrderApi(order.id)
+    ElMessage({
+      type: 'success',
+      message: '删除成功!',
+    })
+    await loadCurrentTable()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '订单删除失败'))
+  }
+}
+
+const dispatchOrder = (order: AllOrder) => {
+  dispatchDialogMode.value = 'dispatch'
+  dispatchTargetOrder.value = order
+  dispatchDesignerId.value = undefined
+  dispatchDialogVisible.value = true
+}
+
+const reassignOrder = (order: AllOrder) => {
+  dispatchDialogMode.value = 'reassign'
+  dispatchTargetOrder.value = order
+  dispatchDesignerId.value = order.designerId ?? undefined
+  dispatchDialogVisible.value = true
+}
+
+const confirmDispatchOrder = async () => {
+  if (!dispatchTargetOrder.value || !dispatchDesignerId.value) return
+
+  try {
+    if (dispatchDialogMode.value === 'reassign') {
+      await assignOrderApi(Number(dispatchTargetOrder.value.id), {
+        designerId: Number(dispatchDesignerId.value),
+      })
+      ElMessage.success('改派成功')
+    } else {
+      await dispatchAdminOrderApi({
+        id: dispatchTargetOrder.value.id,
+        designerId: dispatchDesignerId.value,
+      })
+      ElMessage.success('派单成功')
+    }
+
+    dispatchDialogVisible.value = false
+    await loadCurrentTable()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, dispatchDialogMode.value === 'reassign' ? '改派失败' : '派单失败'))
+  }
+}
+
+const approveOrder = async (order: AllOrder) => {
+  try {
+    await approveAdminOrderApi(order.id)
+    ElMessage.success('审核通过成功')
+    await loadCurrentTable()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '审核通过失败'))
+  }
+}
+
+const rejectOrder = async (order: AllOrder) => {
+  try {
+    await rejectAdminOrderApi(order.id)
+    ElMessage.success('退回成功')
+    await loadCurrentTable()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '退回失败'))
+  }
+}
+
+const loadMerchantGroups = async () => {
+  isGroupLoading.value = true
+
+  try {
+    merchantGroups.value = (await getAdminOrderShopGroupsApi()).map(normalizeGroup)
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '商家分组加载失败'))
+  } finally {
+    isGroupLoading.value = false
+  }
+}
+
+const loadDesignerGroups = async () => {
+  isGroupLoading.value = true
+
+  try {
+    designerGroups.value = (await getAdminOrderDesignerGroupsApi()).map(normalizeGroup)
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '设计师分组加载失败'))
+  } finally {
+    isGroupLoading.value = false
+  }
+}
+
+const exportSelectedRows = async () => {
+  if (!selectedRows.value.length) return
+
+  isExporting.value = true
+
+  try {
+    const response = await exportSelectedAdminOrdersApi({
+      tableType: tableMode.value === 'detail' ? 'DETAIL' : 'SUMMARY',
+      ids: selectedRows.value.map(row => row.id),
+    })
+    const blob = response.data
+    const objectUrl = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = objectUrl
+    link.download = 'orders.xlsx'
+    link.click()
+    window.URL.revokeObjectURL(objectUrl)
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '导出失败'))
+  } finally {
+    isExporting.value = false
+  }
+}
+
+const triggerImport = () => {
+  importFileInput.value?.click()
+}
+
+const handleImportFileChange = async (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+
+  if (!file) return
+
+  isImporting.value = true
+
+  try {
+    const preview = await previewAdminOrdersImportApi(file)
+    orderDialogMode.value = 'create'
+    createOrderInitialForm.value = getEmptyCreateOrderForm()
+    createOrderImportPreview.value = preview
+    isCreateOrderSubmitDisabled.value = !preview.valid || preview.errors.length > 0
+    isCreateOrderDialogVisible.value = true
+
+    if (!preview.valid || preview.errors.length > 0) {
+      ElMessage.warning('导入数据存在错误，请修改 Excel 后重新上传。')
+    } else {
+      ElMessage.success('导入解析成功，请预览确认后提交。')
+    }
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '导入解析失败'))
+  } finally {
+    isImporting.value = false
+  }
+}
+
+onMounted(() => {
+  void loadFilterOptions()
+  void loadCurrentTable()
+})
 </script>
 
 <style scoped lang="scss">
@@ -316,15 +733,26 @@ const handleCreateOrderConfirm = (_form: CreateOrderForm) => {
 
 .orders-filter {
   display: grid;
-  grid-template-columns: 154px 154px 154px 154px minmax(245px, 306px) 184px 72px 112px 142px 104px;
-  gap: 12px;
+  grid-template-columns:
+    minmax(112px, 1fr)
+    minmax(112px, 1fr)
+    minmax(112px, 1fr)
+    minmax(112px, 1fr)
+    minmax(220px, 1.9fr)
+    minmax(128px, 1.15fr)
+    64px
+    100px
+    132px
+    96px
+    96px;
+  gap: 10px;
   align-items: center;
   align-content: center;
   min-height: 64px;
   padding: 12px 22px;
   margin: 0;
-  background: #f8fbff;
-  border-bottom: 1px solid #dfe8f4;
+  overflow-x: hidden;
+  overflow-y: hidden;
 
   :deep(.el-form-item) {
     margin: 0;
@@ -359,6 +787,7 @@ const handleCreateOrderConfirm = (_form: CreateOrderForm) => {
 }
 
 .query-button,
+.import-button,
 .export-button,
 .summary-button {
   height: 34px;
@@ -368,11 +797,18 @@ const handleCreateOrderConfirm = (_form: CreateOrderForm) => {
 }
 
 .query-button {
-  width: 72px;
+  width: 64px;
+}
+
+.import-button {
+  width: 96px;
+  color: #0f766e;
+  background: #fff;
+  border: 1px solid #d8e2f1;
 }
 
 .export-button {
-  width: 104px;
+  width: 96px;
   color: #1f5fe8;
   background: #fff;
   border: 1px solid #d8e2f1;
@@ -387,7 +823,7 @@ const handleCreateOrderConfirm = (_form: CreateOrderForm) => {
 }
 
 .summary-button {
-  width: 142px;
+  width: 132px;
   color: #001b44;
   background: #fff;
   border: 1px solid #d8e2f1;
@@ -485,6 +921,10 @@ const handleCreateOrderConfirm = (_form: CreateOrderForm) => {
   }
 }
 
+.import-file-input {
+  display: none;
+}
+
 .pagination {
   display: flex;
   align-items: center;
@@ -538,24 +978,58 @@ const handleCreateOrderConfirm = (_form: CreateOrderForm) => {
   padding: 12px 34px 24px;
 }
 
+:deep(.dispatch-dialog) {
+  border-radius: 12px;
+}
+
+:deep(.dispatch-dialog .el-dialog__body) {
+  padding: 16px 24px 2px;
+}
+
+:deep(.dispatch-dialog .el-select) {
+  width: 100%;
+}
+
 @media (max-width: 1500px) {
   .all-orders-card {
-    grid-template-rows: 56px auto minmax(0, 1fr) 72px;
+    grid-template-rows: 56px minmax(64px, auto) minmax(0, 1fr) 72px;
   }
 
   .orders-filter {
-    grid-template-columns: repeat(4, minmax(140px, 1fr));
-    padding: 14px 22px;
+    grid-template-columns:
+      minmax(112px, 1fr)
+      minmax(112px, 1fr)
+      minmax(112px, 1fr)
+      minmax(112px, 1fr)
+      minmax(220px, 1.9fr)
+      minmax(128px, 1.15fr)
+      64px
+      100px
+      132px
+      96px
+      96px;
+    padding: 12px 22px;
   }
 
   .date-form-item {
-    grid-column: span 2;
+    grid-column: auto;
   }
 }
 
 @media (max-width: 900px) {
   .orders-filter {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      minmax(112px, 1fr)
+      minmax(112px, 1fr)
+      minmax(112px, 1fr)
+      minmax(112px, 1fr)
+      minmax(220px, 1.9fr)
+      minmax(128px, 1.15fr)
+      64px
+      100px
+      132px
+      96px
+      96px;
   }
 
   .date-form-item {

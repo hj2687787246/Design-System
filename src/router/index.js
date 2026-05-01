@@ -25,9 +25,12 @@ router.beforeEach((to) => {
     return getHomePath()
   }
 
-  const allowedRoles = to.matched.flatMap((record) => record.meta.roles || [])
+  const hasDeniedRoute = to.matched.some((record) => {
+    const allowedRoles = record.meta.roles || []
+    return allowedRoles.length > 0 && (!user?.role || !allowedRoles.includes(user.role))
+  })
 
-  if (hasToken && allowedRoles.length > 0 && user?.role && !allowedRoles.includes(user.role)) {
+  if (hasToken && hasDeniedRoute) {
     return getHomePath()
   }
 
@@ -35,4 +38,3 @@ router.beforeEach((to) => {
 })
 
 export default router
-

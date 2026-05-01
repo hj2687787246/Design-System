@@ -10,7 +10,7 @@
 
       <div class="user-area">
         <span class="user-name">{{ userName }}</span>
-        <el-dropdown trigger="click" @command="handleUserCommand">
+        <el-dropdown placement="bottom-end" popper-class="account-menu-popper" trigger="click" @command="handleUserCommand">
           <button class="user-avatar" type="button" title="账户菜单">
             <el-icon>
               <User />
@@ -19,8 +19,8 @@
 
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="account">修改账户</el-dropdown-item>
-              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+              <el-dropdown-item :icon="EditPen" command="account">修改账户</el-dropdown-item>
+              <el-dropdown-item :icon="SwitchButton" command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -64,7 +64,7 @@
 import { computed, nextTick, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { Grid, User } from '@element-plus/icons-vue'
+import { EditPen, Grid, SwitchButton, User } from '@element-plus/icons-vue'
 import { RouterView, useRouter } from 'vue-router'
 import { logoutApi } from '../api/auth'
 import { updateUserApi } from '../api/users'

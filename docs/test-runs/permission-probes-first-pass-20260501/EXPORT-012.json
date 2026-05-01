@@ -1,0 +1,20 @@
+﻿{
+  "case": "EXPORT-012",
+  "contentType": "application/json",
+  "httpStatus": 403,
+  "json": {
+    "code": 403,
+    "data": null,
+    "message": "无权限"
+  },
+  "passed": true,
+  "text": "{\"code\":403,\"message\":\"无权限\",\"data\":null}",
+  "tokenUser": {
+    "id": 28,
+    "realName": "设计师强sir",
+    "role": "DESIGNER",
+    "status": "ENABLED",
+    "username": "shejishi"
+  },
+  "url": "http://127.0.0.1:5187/designer/orders"
+}

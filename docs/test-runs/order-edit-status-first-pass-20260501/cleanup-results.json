@@ -1,0 +1,126 @@
+﻿{
+  "deleteMerchant": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除商户成功\",\"data\":true}"
+  },
+  "deleteOrder": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除订单成功\",\"data\":true}"
+  },
+  "merchantAfterDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "merchantBeforeDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:41:18",
+            "id": 14,
+            "merchantName": "QA编辑状态商户_20260501054032",
+            "photoTypes": [
+              {
+                "acceptPrice": "9.99",
+                "dispatchPrice": "4.44",
+                "id": 29,
+                "photoType": "QA编辑状态类型_20260501054032"
+              }
+            ]
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[{\"id\":14,\"merchantName\":\"QA编辑状态商户_20260501054032\",\"photoTypes\":[{\"id\":29,\"photoType\":\"QA编辑状态类型_20260501054032\",\"acceptPrice\":\"9.99\",\"dispatchPrice\":\"4.44\"}],\"createdAt\":\"2026-05-01 05:41:18\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "merchantId": 14,
+  "orderAfterDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "orderBeforeDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "",
+            "customer": "QA编辑状态客户_20260501054032_EDIT",
+            "designer": "",
+            "dispatchPrice": 3.33,
+            "dispatchTotal": 16.65,
+            "id": 20,
+            "index": 1,
+            "merchant": "QA编辑状态商户_20260501054032",
+            "orderNo": "QA_EDIT_STATUS_20260501054032_EDIT",
+            "orderedAt": "2026-05-01 05:41:00",
+            "photoCount": 5,
+            "photoType": "QA编辑状态类型_20260501054032",
+            "receivePrice": 8.88,
+            "receiveTotal": 44.4,
+            "remark": "QA edit status edited",
+            "status": "其他"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[{\"id\":20,\"merchant\":\"QA编辑状态商户_20260501054032\",\"photoType\":\"QA编辑状态类型_20260501054032\",\"status\":\"其他\",\"designer\":\"\",\"orderNo\":\"QA_EDIT_STATUS_20260501054032_EDIT\",\"photoCount\":5,\"customer\":\"QA编辑状态客户_20260501054032_EDIT\",\"remark\":\"QA edit status edited\",\"orderedAt\":\"2026-05-01 05:41:00\",\"completedAt\":\"\",\"index\":1,\"receivePrice\":8.88,\"receiveTotal\":44.4,\"dispatchPrice\":3.33,\"dispatchTotal\":16.65}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "orderId": 20,
+  "runAt": "2026-04-30T21:41:31.994Z",
+  "validations": {
+    "merchantDeleteSuccess": true,
+    "merchantExistedBeforeCleanup": true,
+    "merchantRemoved": true,
+    "orderDeleteSuccess": true,
+    "orderExistedBeforeCleanup": true,
+    "orderRemoved": true
+  }
+}

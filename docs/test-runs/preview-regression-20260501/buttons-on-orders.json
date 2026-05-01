@@ -1,0 +1,208 @@
+﻿[
+  {
+    "cls": "user-avatar el-tooltip__trigger el-tooltip__trigger",
+    "i": 0,
+    "text": "",
+    "textContent": ""
+  },
+  {
+    "cls": "active",
+    "i": 1,
+    "text": "全部订单",
+    "textContent": "全部订单"
+  },
+  {
+    "cls": "",
+    "i": 2,
+    "text": "商户管理",
+    "textContent": "商户管理"
+  },
+  {
+    "cls": "",
+    "i": 3,
+    "text": "用户管理",
+    "textContent": "用户管理"
+  },
+  {
+    "cls": "el-button el-button--primary is-plain query-button",
+    "i": 4,
+    "text": "查询",
+    "textContent": "查询"
+  },
+  {
+    "cls": "el-button el-button--success is-plain create-order-button",
+    "i": 5,
+    "text": "新建订单",
+    "textContent": "新建订单"
+  },
+  {
+    "cls": "el-button el-button--success summary-button",
+    "i": 6,
+    "text": "详情\n/\n汇总",
+    "textContent": " 详情/ 汇总"
+  },
+  {
+    "cls": "el-button is-plain import-button",
+    "i": 7,
+    "text": "导入数据",
+    "textContent": "导入数据"
+  },
+  {
+    "cls": "el-button is-disabled is-plain export-button",
+    "i": 8,
+    "text": "导出数据",
+    "textContent": "导出数据"
+  },
+  {
+    "cls": "table-header-link",
+    "i": 9,
+    "text": "商家名称",
+    "textContent": "商家名称"
+  },
+  {
+    "cls": "table-header-link",
+    "i": 10,
+    "text": "设计师",
+    "textContent": "设计师"
+  },
+  {
+    "cls": "status-dropdown-button el-tooltip__trigger el-tooltip__trigger",
+    "i": 11,
+    "text": "未完工",
+    "textContent": "未完工"
+  },
+  {
+    "cls": "el-button el-button--success el-button--small is-plain",
+    "i": 12,
+    "text": "改派",
+    "textContent": "改派"
+  },
+  {
+    "cls": "el-button el-button--primary el-button--small is-plain",
+    "i": 13,
+    "text": "编辑",
+    "textContent": "编辑"
+  },
+  {
+    "cls": "el-button el-button--danger el-button--small is-plain el-tooltip__trigger",
+    "i": 14,
+    "text": "删除",
+    "textContent": "删除"
+  },
+  {
+    "cls": "status-dropdown-button el-tooltip__trigger el-tooltip__trigger",
+    "i": 15,
+    "text": "未完工",
+    "textContent": "未完工"
+  },
+  {
+    "cls": "el-button el-button--success el-button--small is-plain",
+    "i": 16,
+    "text": "改派",
+    "textContent": "改派"
+  },
+  {
+    "cls": "el-button el-button--primary el-button--small is-plain",
+    "i": 17,
+    "text": "编辑",
+    "textContent": "编辑"
+  },
+  {
+    "cls": "el-button el-button--danger el-button--small is-plain el-tooltip__trigger",
+    "i": 18,
+    "text": "删除",
+    "textContent": "删除"
+  },
+  {
+    "cls": "status-dropdown-button el-tooltip__trigger el-tooltip__trigger",
+    "i": 19,
+    "text": "问题件",
+    "textContent": "问题件"
+  },
+  {
+    "cls": "el-button el-button--primary el-button--small is-plain",
+    "i": 20,
+    "text": "编辑",
+    "textContent": "编辑"
+  },
+  {
+    "cls": "el-button el-button--danger el-button--small is-plain el-tooltip__trigger",
+    "i": 21,
+    "text": "删除",
+    "textContent": "删除"
+  },
+  {
+    "cls": "status-dropdown-button el-tooltip__trigger el-tooltip__trigger",
+    "i": 22,
+    "text": "问题件",
+    "textContent": "问题件"
+  },
+  {
+    "cls": "el-button el-button--primary el-button--small is-plain",
+    "i": 23,
+    "text": "编辑",
+    "textContent": "编辑"
+  },
+  {
+    "cls": "el-button el-button--danger el-button--small is-plain el-tooltip__trigger",
+    "i": 24,
+    "text": "删除",
+    "textContent": "删除"
+  },
+  {
+    "cls": "el-button el-button--small is-plain clear-selection-button",
+    "i": 25,
+    "text": "清空选择",
+    "textContent": "清空选择"
+  },
+  {
+    "cls": "btn-prev",
+    "i": 26,
+    "text": "",
+    "textContent": ""
+  },
+  {
+    "cls": "btn-next",
+    "i": 27,
+    "text": "",
+    "textContent": ""
+  },
+  {
+    "cls": "el-picker-panel__icon-btn d-arrow-left",
+    "i": 28,
+    "text": "",
+    "textContent": ""
+  },
+  {
+    "cls": "el-picker-panel__icon-btn arrow-left",
+    "i": 29,
+    "text": "",
+    "textContent": ""
+  },
+  {
+    "cls": "el-picker-panel__icon-btn d-arrow-right",
+    "i": 30,
+    "text": "",
+    "textContent": ""
+  },
+  {
+    "cls": "el-picker-panel__icon-btn arrow-right",
+    "i": 31,
+    "text": "",
+    "textContent": ""
+  },
+  {
+    "cls": "el-button el-button--small is-text el-picker-panel__link-btn",
+    "i": 32,
+    "text": "清空",
+    "textContent": "清空"
+  },
+  {
+    "cls": "el-button el-button--small is-disabled is-plain el-picker-panel__link-btn",
+    "i": 33,
+    "text": "确定",
+    "textContent": "确定"
+  }
+]
+
+

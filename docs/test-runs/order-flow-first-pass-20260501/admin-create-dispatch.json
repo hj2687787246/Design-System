@@ -1,0 +1,187 @@
+﻿{
+  "createMerchant": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:36:24",
+        "id": 13,
+        "merchantName": "QA流程商户_20260501053604",
+        "photoTypes": [
+          {
+            "acceptPrice": "11.11",
+            "dispatchPrice": "6.67",
+            "id": 28,
+            "photoType": "QA流程类型_20260501053604"
+          }
+        ]
+      },
+      "message": "新增商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"新增商户成功\",\"data\":{\"id\":13,\"merchantName\":\"QA流程商户_20260501053604\",\"photoTypes\":[{\"id\":28,\"photoType\":\"QA流程类型_20260501053604\",\"acceptPrice\":\"11.11\",\"dispatchPrice\":\"6.67\"}],\"createdAt\":\"2026-05-01 05:36:24\"}}"
+  },
+  "createOrder": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": [
+        {
+          "completedAt": "",
+          "customer": "QA流程客户_20260501053604",
+          "designer": "",
+          "dispatchPrice": 6.67,
+          "dispatchTotal": 13.33,
+          "id": 19,
+          "index": 1,
+          "merchant": "QA流程商户_20260501053604",
+          "orderNo": "QA_FLOW_20260501053604",
+          "orderedAt": "2026-05-01 05:36:00",
+          "photoCount": 2,
+          "photoType": "QA流程类型_20260501053604",
+          "receivePrice": 11.11,
+          "receiveTotal": 22.22,
+          "remark": "QA flow remark",
+          "status": "未派单"
+        }
+      ],
+      "message": "批量新增订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"批量新增订单成功\",\"data\":[{\"id\":19,\"merchant\":\"QA流程商户_20260501053604\",\"photoType\":\"QA流程类型_20260501053604\",\"status\":\"未派单\",\"designer\":\"\",\"orderNo\":\"QA_FLOW_20260501053604\",\"photoCount\":2,\"customer\":\"QA流程客户_20260501053604\",\"remark\":\"QA flow remark\",\"orderedAt\":\"2026-05-01 05:36:00\",\"completedAt\":\"\",\"index\":1,\"receivePrice\":11.11,\"receiveTotal\":22.22,\"dispatchPrice\":6.67,\"dispatchTotal\":13.33}]}"
+  },
+  "createdOrder": {
+    "completedAt": "",
+    "customer": "QA流程客户_20260501053604",
+    "designer": "",
+    "dispatchPrice": 6.67,
+    "dispatchTotal": 13.33,
+    "id": 19,
+    "index": 1,
+    "merchant": "QA流程商户_20260501053604",
+    "orderNo": "QA_FLOW_20260501053604",
+    "orderedAt": "2026-05-01 05:36:00",
+    "photoCount": 2,
+    "photoType": "QA流程类型_20260501053604",
+    "receivePrice": 11.11,
+    "receiveTotal": 22.22,
+    "remark": "QA flow remark",
+    "status": "未派单"
+  },
+  "dispatchOrder": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "completedAt": "",
+        "customer": "QA流程客户_20260501053604",
+        "designer": "设计师强sir",
+        "dispatchPrice": 6.67,
+        "dispatchTotal": 13.33,
+        "id": 19,
+        "merchant": "QA流程商户_20260501053604",
+        "orderNo": "QA_FLOW_20260501053604",
+        "orderedAt": "2026-05-01 05:36:00",
+        "photoCount": 2,
+        "photoType": "QA流程类型_20260501053604",
+        "receivePrice": 11.11,
+        "receiveTotal": 22.22,
+        "remark": "QA flow remark",
+        "status": "未完工"
+      },
+      "message": "派单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"派单成功\",\"data\":{\"id\":19,\"merchant\":\"QA流程商户_20260501053604\",\"photoType\":\"QA流程类型_20260501053604\",\"status\":\"未完工\",\"designer\":\"设计师强sir\",\"orderNo\":\"QA_FLOW_20260501053604\",\"photoCount\":2,\"customer\":\"QA流程客户_20260501053604\",\"remark\":\"QA flow remark\",\"orderedAt\":\"2026-05-01 05:36:00\",\"completedAt\":\"\",\"receivePrice\":11.11,\"receiveTotal\":22.22,\"dispatchPrice\":6.67,\"dispatchTotal\":13.33}}"
+  },
+  "ids": {
+    "merchantId": 13,
+    "orderId": 19,
+    "productTypeId": 28
+  },
+  "listAfterCreate": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "",
+            "customer": "QA流程客户_20260501053604",
+            "designer": "",
+            "dispatchPrice": 6.67,
+            "dispatchTotal": 13.33,
+            "id": 19,
+            "index": 1,
+            "merchant": "QA流程商户_20260501053604",
+            "orderNo": "QA_FLOW_20260501053604",
+            "orderedAt": "2026-05-01 05:36:00",
+            "photoCount": 2,
+            "photoType": "QA流程类型_20260501053604",
+            "receivePrice": 11.11,
+            "receiveTotal": 22.22,
+            "remark": "QA flow remark",
+            "status": "未派单"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[{\"id\":19,\"merchant\":\"QA流程商户_20260501053604\",\"photoType\":\"QA流程类型_20260501053604\",\"status\":\"未派单\",\"designer\":\"\",\"orderNo\":\"QA_FLOW_20260501053604\",\"photoCount\":2,\"customer\":\"QA流程客户_20260501053604\",\"remark\":\"QA flow remark\",\"orderedAt\":\"2026-05-01 05:36:00\",\"completedAt\":\"\",\"index\":1,\"receivePrice\":11.11,\"receiveTotal\":22.22,\"dispatchPrice\":6.67,\"dispatchTotal\":13.33}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "listAfterDispatch": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "",
+            "customer": "QA流程客户_20260501053604",
+            "designer": "设计师强sir",
+            "dispatchPrice": 6.67,
+            "dispatchTotal": 13.33,
+            "id": 19,
+            "index": 1,
+            "merchant": "QA流程商户_20260501053604",
+            "orderNo": "QA_FLOW_20260501053604",
+            "orderedAt": "2026-05-01 05:36:00",
+            "photoCount": 2,
+            "photoType": "QA流程类型_20260501053604",
+            "receivePrice": 11.11,
+            "receiveTotal": 22.22,
+            "remark": "QA flow remark",
+            "status": "未完工"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[{\"id\":19,\"merchant\":\"QA流程商户_20260501053604\",\"photoType\":\"QA流程类型_20260501053604\",\"status\":\"未完工\",\"designer\":\"设计师强sir\",\"orderNo\":\"QA_FLOW_20260501053604\",\"photoCount\":2,\"customer\":\"QA流程客户_20260501053604\",\"remark\":\"QA flow remark\",\"orderedAt\":\"2026-05-01 05:36:00\",\"completedAt\":\"\",\"index\":1,\"receivePrice\":11.11,\"receiveTotal\":22.22,\"dispatchPrice\":6.67,\"dispatchTotal\":13.33}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "runAt": "2026-04-30T21:36:22.444Z",
+  "testData": {
+    "customerInfo": "QA流程客户_20260501053604",
+    "designerId": 28,
+    "designerName": "设计师强sir",
+    "merchantName": "QA流程商户_20260501053604",
+    "orderNo": "QA_FLOW_20260501053604",
+    "photoType": "QA流程类型_20260501053604",
+    "stamp": "20260501053604"
+  },
+  "validations": {
+    "afterDispatchUncompleted": true,
+    "dispatched": true,
+    "initialUnassigned": true,
+    "merchantCreated": true,
+    "orderCreated": true
+  }
+}

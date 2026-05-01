@@ -1,0 +1,61 @@
+﻿{
+  "afterDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询账号成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询账号成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "beforeDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:42:25",
+            "id": 33,
+            "lastLoginAt": "2026-05-01 05:43:26",
+            "realName": "QA个人设置_20260501054158_EDIT",
+            "role": "DESIGNER",
+            "status": "ENABLED",
+            "updatedAt": "2026-05-01 05:43:25",
+            "username": "qa_account_20260501054158"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询账号成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询账号成功\",\"data\":{\"records\":[{\"username\":\"qa_account_20260501054158\",\"realName\":\"QA个人设置_20260501054158_EDIT\",\"role\":\"DESIGNER\",\"status\":\"ENABLED\",\"id\":33,\"lastLoginAt\":\"2026-05-01 05:43:26\",\"createdAt\":\"2026-05-01 05:42:25\",\"updatedAt\":\"2026-05-01 05:43:25\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "deleteUser": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除账号成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除账号成功\",\"data\":true}"
+  },
+  "runAt": "2026-04-30T21:43:35.171Z",
+  "userId": 33,
+  "username": "qa_account_20260501054158",
+  "validations": {
+    "deleteSuccess": true,
+    "existedBeforeCleanup": true,
+    "removed": true
+  }
+}

@@ -7,29 +7,23 @@ export interface MasterDataFilters {
   merchantName: string
 }
 
+export type MerchantId = number | string
+
 export interface MerchantPhotoType {
-  id: string
+  id: MerchantId
   photoType: string
   acceptPrice: number | undefined
   dispatchPrice: number | undefined
 }
 
-export interface MerchantCustomer {
-  id: string
-  customerName: string
-  photoCount: number | undefined
-}
-
 export interface MerchantRecord {
-  id: string
+  id: MerchantId
   merchantName: string
   photoTypes: MerchantPhotoType[]
-  customers: MerchantCustomer[]
   createdAt: string
 }
 
 export interface MerchantDialogForm {
   merchantName: string
   photoTypes: MerchantPhotoType[]
-  customers: MerchantCustomer[]
 }

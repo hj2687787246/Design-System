@@ -1,0 +1,148 @@
+﻿{
+  "complete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "completedAt": "",
+        "customer": "QA非法流转客户_20260501054402",
+        "designer": "QA流转设计师_20260501054402",
+        "id": 21,
+        "merchant": "QA非法流转商户_20260501054402",
+        "orderNo": "QA_FLOW_NEG_20260501054402",
+        "orderedAt": "2026-05-01 05:44:00",
+        "photoCount": 1,
+        "photoType": "QA非法流转类型_20260501054402",
+        "remark": "QA negative flow",
+        "status": "待审核",
+        "statusClass": ""
+      },
+      "message": "提交完工成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"提交完工成功\",\"data\":{\"id\":21,\"merchant\":\"QA非法流转商户_20260501054402\",\"photoType\":\"QA非法流转类型_20260501054402\",\"status\":\"待审核\",\"designer\":\"QA流转设计师_20260501054402\",\"orderNo\":\"QA_FLOW_NEG_20260501054402\",\"photoCount\":1,\"customer\":\"QA非法流转客户_20260501054402\",\"remark\":\"QA negative flow\",\"orderedAt\":\"2026-05-01 05:44:00\",\"completedAt\":\"\",\"statusClass\":\"\"}}"
+  },
+  "completeAgain": {
+    "httpStatus": 400,
+    "json": {
+      "code": 400,
+      "data": null,
+      "message": "当前订单状态不能提交"
+    },
+    "ok": false,
+    "text": "{\"code\":400,\"message\":\"当前订单状态不能提交\",\"data\":null}"
+  },
+  "listAfterComplete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "",
+            "customer": "QA非法流转客户_20260501054402",
+            "designer": "QA流转设计师_20260501054402",
+            "id": 21,
+            "merchant": "QA非法流转商户_20260501054402",
+            "orderNo": "QA_FLOW_NEG_20260501054402",
+            "orderedAt": "2026-05-01 05:44:00",
+            "photoCount": 1,
+            "photoType": "QA非法流转类型_20260501054402",
+            "remark": "QA negative flow",
+            "status": "待审核",
+            "statusClass": ""
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询设计师订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询设计师订单成功\",\"data\":{\"records\":[{\"id\":21,\"merchant\":\"QA非法流转商户_20260501054402\",\"photoType\":\"QA非法流转类型_20260501054402\",\"status\":\"待审核\",\"designer\":\"QA流转设计师_20260501054402\",\"orderNo\":\"QA_FLOW_NEG_20260501054402\",\"photoCount\":1,\"customer\":\"QA非法流转客户_20260501054402\",\"remark\":\"QA negative flow\",\"orderedAt\":\"2026-05-01 05:44:00\",\"completedAt\":\"\",\"statusClass\":\"\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "listAfterRepeat": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "",
+            "customer": "QA非法流转客户_20260501054402",
+            "designer": "QA流转设计师_20260501054402",
+            "id": 21,
+            "merchant": "QA非法流转商户_20260501054402",
+            "orderNo": "QA_FLOW_NEG_20260501054402",
+            "orderedAt": "2026-05-01 05:44:00",
+            "photoCount": 1,
+            "photoType": "QA非法流转类型_20260501054402",
+            "remark": "QA negative flow",
+            "status": "待审核",
+            "statusClass": ""
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询设计师订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询设计师订单成功\",\"data\":{\"records\":[{\"id\":21,\"merchant\":\"QA非法流转商户_20260501054402\",\"photoType\":\"QA非法流转类型_20260501054402\",\"status\":\"待审核\",\"designer\":\"QA流转设计师_20260501054402\",\"orderNo\":\"QA_FLOW_NEG_20260501054402\",\"photoCount\":1,\"customer\":\"QA非法流转客户_20260501054402\",\"remark\":\"QA negative flow\",\"orderedAt\":\"2026-05-01 05:44:00\",\"completedAt\":\"\",\"statusClass\":\"\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "listBefore": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "",
+            "customer": "QA非法流转客户_20260501054402",
+            "designer": "QA流转设计师_20260501054402",
+            "id": 21,
+            "merchant": "QA非法流转商户_20260501054402",
+            "orderNo": "QA_FLOW_NEG_20260501054402",
+            "orderedAt": "2026-05-01 05:44:00",
+            "photoCount": 1,
+            "photoType": "QA非法流转类型_20260501054402",
+            "remark": "QA negative flow",
+            "status": "未完工",
+            "statusClass": "blue"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询设计师订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询设计师订单成功\",\"data\":{\"records\":[{\"id\":21,\"merchant\":\"QA非法流转商户_20260501054402\",\"photoType\":\"QA非法流转类型_20260501054402\",\"status\":\"未完工\",\"designer\":\"QA流转设计师_20260501054402\",\"orderNo\":\"QA_FLOW_NEG_20260501054402\",\"photoCount\":1,\"customer\":\"QA非法流转客户_20260501054402\",\"remark\":\"QA negative flow\",\"orderedAt\":\"2026-05-01 05:44:00\",\"completedAt\":\"\",\"statusClass\":\"blue\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "login": {
+    "code": 200,
+    "httpStatus": 200,
+    "message": "登录成功",
+    "ok": true,
+    "user": {
+      "id": 34,
+      "realName": "QA流转设计师_20260501054402",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "qa_flow_designer_20260501054402"
+    }
+  },
+  "orderId": 21,
+  "runAt": "2026-04-30T21:47:26.838Z",
+  "validations": {
+    "completeSuccess": true,
+    "ownerCanSeeUncompleted": true,
+    "ownerLoginSuccess": true,
+    "pendingAfterComplete": true,
+    "repeatCompleteRejected": true,
+    "stillPendingAfterRepeat": true
+  }
+}

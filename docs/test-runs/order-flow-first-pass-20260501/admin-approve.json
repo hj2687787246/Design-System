@@ -1,0 +1,105 @@
+﻿{
+  "afterAdminList": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "2026-05-01 05:39:17",
+            "customer": "QA流程客户_20260501053604",
+            "designer": "设计师强sir",
+            "dispatchPrice": 6.67,
+            "dispatchTotal": 13.33,
+            "id": 19,
+            "index": 1,
+            "merchant": "QA流程商户_20260501053604",
+            "orderNo": "QA_FLOW_20260501053604",
+            "orderedAt": "2026-05-01 05:36:00",
+            "photoCount": 2,
+            "photoType": "QA流程类型_20260501053604",
+            "receivePrice": 11.11,
+            "receiveTotal": 22.22,
+            "remark": "QA flow remark",
+            "status": "已完工"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[{\"id\":19,\"merchant\":\"QA流程商户_20260501053604\",\"photoType\":\"QA流程类型_20260501053604\",\"status\":\"已完工\",\"designer\":\"设计师强sir\",\"orderNo\":\"QA_FLOW_20260501053604\",\"photoCount\":2,\"customer\":\"QA流程客户_20260501053604\",\"remark\":\"QA flow remark\",\"orderedAt\":\"2026-05-01 05:36:00\",\"completedAt\":\"2026-05-01 05:39:17\",\"index\":1,\"receivePrice\":11.11,\"receiveTotal\":22.22,\"dispatchPrice\":6.67,\"dispatchTotal\":13.33}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "approve": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "completedAt": "2026-05-01 05:39:17",
+        "customer": "QA流程客户_20260501053604",
+        "designer": "设计师强sir",
+        "dispatchPrice": 6.67,
+        "dispatchTotal": 13.33,
+        "id": 19,
+        "merchant": "QA流程商户_20260501053604",
+        "orderNo": "QA_FLOW_20260501053604",
+        "orderedAt": "2026-05-01 05:36:00",
+        "photoCount": 2,
+        "photoType": "QA流程类型_20260501053604",
+        "receivePrice": 11.11,
+        "receiveTotal": 22.22,
+        "remark": "QA flow remark",
+        "status": "已完工"
+      },
+      "message": "审核通过成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"审核通过成功\",\"data\":{\"id\":19,\"merchant\":\"QA流程商户_20260501053604\",\"photoType\":\"QA流程类型_20260501053604\",\"status\":\"已完工\",\"designer\":\"设计师强sir\",\"orderNo\":\"QA_FLOW_20260501053604\",\"photoCount\":2,\"customer\":\"QA流程客户_20260501053604\",\"remark\":\"QA flow remark\",\"orderedAt\":\"2026-05-01 05:36:00\",\"completedAt\":\"2026-05-01 05:39:17\",\"receivePrice\":11.11,\"receiveTotal\":22.22,\"dispatchPrice\":6.67,\"dispatchTotal\":13.33}}"
+  },
+  "beforeAdminList": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "",
+            "customer": "QA流程客户_20260501053604",
+            "designer": "设计师强sir",
+            "dispatchPrice": 6.67,
+            "dispatchTotal": 13.33,
+            "id": 19,
+            "index": 1,
+            "merchant": "QA流程商户_20260501053604",
+            "orderNo": "QA_FLOW_20260501053604",
+            "orderedAt": "2026-05-01 05:36:00",
+            "photoCount": 2,
+            "photoType": "QA流程类型_20260501053604",
+            "receivePrice": 11.11,
+            "receiveTotal": 22.22,
+            "remark": "QA flow remark",
+            "status": "待审核"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[{\"id\":19,\"merchant\":\"QA流程商户_20260501053604\",\"photoType\":\"QA流程类型_20260501053604\",\"status\":\"待审核\",\"designer\":\"设计师强sir\",\"orderNo\":\"QA_FLOW_20260501053604\",\"photoCount\":2,\"customer\":\"QA流程客户_20260501053604\",\"remark\":\"QA flow remark\",\"orderedAt\":\"2026-05-01 05:36:00\",\"completedAt\":\"\",\"index\":1,\"receivePrice\":11.11,\"receiveTotal\":22.22,\"dispatchPrice\":6.67,\"dispatchTotal\":13.33}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "orderId": 19,
+  "orderNo": "QA_FLOW_20260501053604",
+  "runAt": "2026-04-30T21:39:14.118Z",
+  "validations": {
+    "adminSawPendingReview": true,
+    "afterApproveCompleted": true,
+    "approveSuccess": true,
+    "completedAtPresentAfterApprove": true
+  }
+}

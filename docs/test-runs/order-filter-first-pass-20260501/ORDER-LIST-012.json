@@ -1,0 +1,37 @@
+﻿{
+    "id":  "ORDER-LIST-012",
+    "name":  "无匹配结果展示",
+    "request":  {
+                    "keyword":  "NO_MATCH_ORDER_20260501",
+                    "pageNo":  1,
+                    "pageSize":  15
+                },
+    "response":  {
+                     "httpStatus":  200,
+                     "json":  {
+                                  "code":  200,
+                                  "data":  {
+                                               "pageNo":  1,
+                                               "pageSize":  15,
+                                               "records":  [
+
+                                                           ],
+                                               "total":  0
+                                           },
+                                  "message":  "查询全部订单成功"
+                              },
+                     "ok":  true,
+                     "text":  "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+                 },
+    "validation":  {
+                       "failures":  [
+
+                                    ],
+                       "passed":  true,
+                       "recordCount":  0,
+                       "sampleRecords":  [
+
+                                         ],
+                       "total":  0
+                   }
+}

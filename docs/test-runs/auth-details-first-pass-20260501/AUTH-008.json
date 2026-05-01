@@ -1,0 +1,21 @@
+﻿{
+    "case":  "AUTH-008",
+    "afterLogin":  {
+                       "afterLoginUrl":  "http://127.0.0.1:5187/orders",
+                       "remember":  "admin",
+                       "tokenPresent":  true,
+                       "user":  {
+                                    "id":  1,
+                                    "realName":  "超级管理员",
+                                    "role":  "ADMIN",
+                                    "status":  "ENABLED",
+                                    "username":  "admin"
+                                }
+                   },
+    "prefillAfterReturn":  {
+                               "accountValue":  "admin",
+                               "loginUrlAfterClearingAuth":  "http://127.0.0.1:5187/",
+                               "remember":  "admin",
+                               "tokenPresent":  false
+                           }
+}

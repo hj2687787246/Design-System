@@ -1,0 +1,92 @@
+﻿{
+  "failureAttempt": {
+    "httpStatus": 401,
+    "json": {
+      "code": 301,
+      "data": null,
+      "message": "您的账号已在其他地方登录，请重新登录"
+    },
+    "ok": false,
+    "text": "{\"code\":301,\"message\":\"您的账号已在其他地方登录，请重新登录\",\"data\":null}"
+  },
+  "login": {
+    "code": 200,
+    "hasAccessToken": true,
+    "httpStatus": 200,
+    "message": "登录成功",
+    "ok": true,
+    "user": {
+      "id": 33,
+      "realName": "QA个人设置_20260501054158",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "qa_account_20260501054158"
+    }
+  },
+  "meAfterSave": {
+    "httpStatus": 401,
+    "json": {
+      "code": 301,
+      "data": null,
+      "message": "您的账号已在其他地方登录，请重新登录"
+    },
+    "ok": false,
+    "text": "{\"code\":301,\"message\":\"您的账号已在其他地方登录，请重新登录\",\"data\":null}"
+  },
+  "reloginNewPassword": {
+    "code": 200,
+    "httpStatus": 200,
+    "message": "登录成功",
+    "ok": true,
+    "user": {
+      "id": 33,
+      "realName": "QA个人设置_20260501054158_EDIT",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "qa_account_20260501054158"
+    }
+  },
+  "reloginOldPassword": {
+    "code": 401,
+    "httpStatus": 401,
+    "message": "账号或密码错误",
+    "ok": false
+  },
+  "runAt": "2026-04-30T21:43:06.601Z",
+  "selfSave": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:42:25",
+        "id": 33,
+        "lastLoginAt": "2026-05-01 05:43:08",
+        "realName": "QA个人设置_20260501054158_EDIT",
+        "role": "DESIGNER",
+        "status": "ENABLED",
+        "updatedAt": "2026-05-01 05:43:08",
+        "username": "qa_account_20260501054158"
+      },
+      "message": "编辑账号成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"编辑账号成功\",\"data\":{\"username\":\"qa_account_20260501054158\",\"realName\":\"QA个人设置_20260501054158_EDIT\",\"role\":\"DESIGNER\",\"status\":\"ENABLED\",\"id\":33,\"lastLoginAt\":\"2026-05-01 05:43:08\",\"createdAt\":\"2026-05-01 05:42:25\",\"updatedAt\":\"2026-05-01 05:43:08\"}}"
+  },
+  "testData": {
+    "editedRealName": "QA个人设置_20260501054158_EDIT",
+    "newPassword": "654321",
+    "password": "123321",
+    "realName": "QA个人设置_20260501054158",
+    "stamp": "20260501054158",
+    "username": "qa_account_20260501054158"
+  },
+  "userId": 33,
+  "validations": {
+    "failureRejected": true,
+    "loginSuccess": true,
+    "newPasswordAccepted": true,
+    "oldPasswordRejected": true,
+    "realNameUpdated": true,
+    "selfSaveSuccess": true
+  }
+}

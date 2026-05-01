@@ -1,0 +1,65 @@
+﻿{
+  "createDesigner": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:31:34",
+        "id": 31,
+        "lastLoginAt": null,
+        "realName": "QA设计师写入测试",
+        "role": "DESIGNER",
+        "status": "ENABLED",
+        "updatedAt": "2026-05-01 05:31:34",
+        "username": "qa_designer_20260501053041"
+      },
+      "message": "创建账号成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"创建账号成功\",\"data\":{\"username\":\"qa_designer_20260501053041\",\"realName\":\"QA设计师写入测试\",\"role\":\"DESIGNER\",\"status\":\"ENABLED\",\"id\":31,\"lastLoginAt\":null,\"createdAt\":\"2026-05-01 05:31:34\",\"updatedAt\":\"2026-05-01 05:31:34\"}}"
+  },
+  "designer": {
+    "createdAt": "2026-05-01 05:31:34",
+    "id": 31,
+    "lastLoginAt": null,
+    "realName": "QA设计师写入测试",
+    "role": "DESIGNER",
+    "status": "ENABLED",
+    "updatedAt": "2026-05-01 05:31:34",
+    "username": "qa_designer_20260501053041"
+  },
+  "dispatcher": {
+    "createdAt": "2026-05-01 05:31:00",
+    "id": 30,
+    "lastLoginAt": null,
+    "realName": "QA调度写入测试-已编辑",
+    "role": "DISPATCHER",
+    "status": "ENABLED",
+    "updatedAt": "2026-05-01 05:31:17",
+    "username": "qa_dispatcher_20260501053041"
+  },
+  "duplicateDesigner": {
+    "httpStatus": 409,
+    "json": {
+      "code": 409,
+      "data": null,
+      "message": "用户名已存在"
+    },
+    "ok": false,
+    "text": "{\"code\":409,\"message\":\"用户名已存在\",\"data\":null}"
+  },
+  "runAt": "2026-04-30T21:31:36.892Z",
+  "testData": {
+    "designerUsername": "qa_designer_20260501053041",
+    "dispatcherUsername": "qa_dispatcher_20260501053041",
+    "password": "123321",
+    "stamp": "20260501053041"
+  },
+  "validations": {
+    "createDesignerPassed": true,
+    "designerExists": true,
+    "designerRoleCorrect": true,
+    "dispatcherExists": true,
+    "duplicateRejected": true
+  }
+}

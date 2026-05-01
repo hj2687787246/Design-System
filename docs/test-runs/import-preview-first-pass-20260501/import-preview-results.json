@@ -1,0 +1,177 @@
+﻿{
+    "runAt":  "2026-04-30T21:53:47.5695317Z",
+    "results":  {
+                    "valid":  {
+                                  "httpStatus":  200,
+                                  "json":  {
+                                               "code":  200,
+                                               "message":  "导入文件解析成功",
+                                               "data":  {
+                                                            "valid":  true,
+                                                            "rows":  [
+                                                                         {
+                                                                             "index":  0,
+                                                                             "excelRowNumber":  2,
+                                                                             "merchantName":  "QA导入商户A_20260501055034",
+                                                                             "photoType":  "QA导入类型A_20260501055034",
+                                                                             "customerInfo":  "QA导入客户A",
+                                                                             "photoCount":  "2",
+                                                                             "acceptUnitPrice":  "12.34",
+                                                                             "dispatchUnitPrice":  "5.67",
+                                                                             "orderNo":  "QA_IMPORT_20260501055034_A",
+                                                                             "orderedAt":  "2026-05-01 05:50:00",
+                                                                             "remark":  "QA valid"
+                                                                         }
+                                                                     ],
+                                                            "errors":  [
+
+                                                                       ]
+                                                        }
+                                           },
+                                  "text":  "{\"code\":200,\"message\":\"导入文件解析成功\",\"data\":{\"valid\":true,\"rows\":[{\"index\":0,\"excelRowNumber\":2,\"merchantName\":\"QA导入商户A_20260501055034\",\"photoType\":\"QA导入类型A_20260501055034\",\"customerInfo\":\"QA导入客户A\",\"photoCount\":\"2\",\"acceptUnitPrice\":\"12.34\",\"dispatchUnitPrice\":\"5.67\",\"orderNo\":\"QA_IMPORT_20260501055034_A\",\"orderedAt\":\"2026-05-01 05:50:00\",\"remark\":\"QA valid\"}],\"errors\":[]}}"
+                              },
+                    "missing-order":  {
+                                          "httpStatus":  200,
+                                          "json":  {
+                                                       "code":  200,
+                                                       "message":  "导入文件解析成功",
+                                                       "data":  {
+                                                                    "valid":  false,
+                                                                    "rows":  [
+                                                                                 {
+                                                                                     "index":  0,
+                                                                                     "excelRowNumber":  2,
+                                                                                     "merchantName":  "QA导入商户A_20260501055034",
+                                                                                     "photoType":  "QA导入类型A_20260501055034",
+                                                                                     "customerInfo":  "QA导入客户缺失",
+                                                                                     "photoCount":  "2",
+                                                                                     "acceptUnitPrice":  "12.34",
+                                                                                     "dispatchUnitPrice":  "5.67",
+                                                                                     "orderNo":  "",
+                                                                                     "orderedAt":  "2026-05-01 05:50:00",
+                                                                                     "remark":  "QA missing"
+                                                                                 }
+                                                                             ],
+                                                                    "errors":  [
+                                                                                   {
+                                                                                       "index":  0,
+                                                                                       "field":  "orderNo",
+                                                                                       "message":  "订单号不能为空",
+                                                                                       "excelRowNumber":  2
+                                                                                   }
+                                                                               ]
+                                                                }
+                                                   },
+                                          "text":  "{\"code\":200,\"message\":\"导入文件解析成功\",\"data\":{\"valid\":false,\"rows\":[{\"index\":0,\"excelRowNumber\":2,\"merchantName\":\"QA导入商户A_20260501055034\",\"photoType\":\"QA导入类型A_20260501055034\",\"customerInfo\":\"QA导入客户缺失\",\"photoCount\":\"2\",\"acceptUnitPrice\":\"12.34\",\"dispatchUnitPrice\":\"5.67\",\"orderNo\":\"\",\"orderedAt\":\"2026-05-01 05:50:00\",\"remark\":\"QA missing\"}],\"errors\":[{\"index\":0,\"field\":\"orderNo\",\"message\":\"订单号不能为空\",\"excelRowNumber\":2}]}}"
+                                      },
+                    "multi-merchant":  {
+                                           "httpStatus":  200,
+                                           "json":  {
+                                                        "code":  200,
+                                                        "message":  "导入文件解析成功",
+                                                        "data":  {
+                                                                     "valid":  true,
+                                                                     "rows":  [
+                                                                                  {
+                                                                                      "index":  0,
+                                                                                      "excelRowNumber":  2,
+                                                                                      "merchantName":  "QA导入商户A_20260501055034",
+                                                                                      "photoType":  "QA导入类型A_20260501055034",
+                                                                                      "customerInfo":  "QA导入客户A",
+                                                                                      "photoCount":  "2",
+                                                                                      "acceptUnitPrice":  "12.34",
+                                                                                      "dispatchUnitPrice":  "5.67",
+                                                                                      "orderNo":  "QA_IMPORT_20260501055034_A",
+                                                                                      "orderedAt":  "2026-05-01 05:50:00",
+                                                                                      "remark":  "QA multi a"
+                                                                                  },
+                                                                                  {
+                                                                                      "index":  1,
+                                                                                      "excelRowNumber":  3,
+                                                                                      "merchantName":  "QA导入商户B_20260501055034",
+                                                                                      "photoType":  "QA导入类型A_20260501055034",
+                                                                                      "customerInfo":  "QA导入客户B",
+                                                                                      "photoCount":  "3",
+                                                                                      "acceptUnitPrice":  "12.34",
+                                                                                      "dispatchUnitPrice":  "5.67",
+                                                                                      "orderNo":  "QA_IMPORT_20260501055034_B",
+                                                                                      "orderedAt":  "2026-05-01 05:51:00",
+                                                                                      "remark":  "QA multi b"
+                                                                                  }
+                                                                              ],
+                                                                     "errors":  [
+
+                                                                                ]
+                                                                 }
+                                                    },
+                                           "text":  "{\"code\":200,\"message\":\"导入文件解析成功\",\"data\":{\"valid\":true,\"rows\":[{\"index\":0,\"excelRowNumber\":2,\"merchantName\":\"QA导入商户A_20260501055034\",\"photoType\":\"QA导入类型A_20260501055034\",\"customerInfo\":\"QA导入客户A\",\"photoCount\":\"2\",\"acceptUnitPrice\":\"12.34\",\"dispatchUnitPrice\":\"5.67\",\"orderNo\":\"QA_IMPORT_20260501055034_A\",\"orderedAt\":\"2026-05-01 05:50:00\",\"remark\":\"QA multi a\"},{\"index\":1,\"excelRowNumber\":3,\"merchantName\":\"QA导入商户B_20260501055034\",\"photoType\":\"QA导入类型A_20260501055034\",\"customerInfo\":\"QA导入客户B\",\"photoCount\":\"3\",\"acceptUnitPrice\":\"12.34\",\"dispatchUnitPrice\":\"5.67\",\"orderNo\":\"QA_IMPORT_20260501055034_B\",\"orderedAt\":\"2026-05-01 05:51:00\",\"remark\":\"QA multi b\"}],\"errors\":[]}}"
+                                       },
+                    "multi-photo":  {
+                                        "httpStatus":  200,
+                                        "json":  {
+                                                     "code":  200,
+                                                     "message":  "导入文件解析成功",
+                                                     "data":  {
+                                                                  "valid":  true,
+                                                                  "rows":  [
+                                                                               {
+                                                                                   "index":  0,
+                                                                                   "excelRowNumber":  2,
+                                                                                   "merchantName":  "QA导入商户A_20260501055034",
+                                                                                   "photoType":  "QA导入类型A_20260501055034",
+                                                                                   "customerInfo":  "QA导入客户A",
+                                                                                   "photoCount":  "2",
+                                                                                   "acceptUnitPrice":  "12.34",
+                                                                                   "dispatchUnitPrice":  "5.67",
+                                                                                   "orderNo":  "QA_IMPORT_20260501055034_A",
+                                                                                   "orderedAt":  "2026-05-01 05:50:00",
+                                                                                   "remark":  "QA multi a"
+                                                                               },
+                                                                               {
+                                                                                   "index":  1,
+                                                                                   "excelRowNumber":  3,
+                                                                                   "merchantName":  "QA导入商户A_20260501055034",
+                                                                                   "photoType":  "QA导入类型B_20260501055034",
+                                                                                   "customerInfo":  "QA导入客户B",
+                                                                                   "photoCount":  "3",
+                                                                                   "acceptUnitPrice":  "12.34",
+                                                                                   "dispatchUnitPrice":  "5.67",
+                                                                                   "orderNo":  "QA_IMPORT_20260501055034_B",
+                                                                                   "orderedAt":  "2026-05-01 05:51:00",
+                                                                                   "remark":  "QA multi b"
+                                                                               }
+                                                                           ],
+                                                                  "errors":  [
+
+                                                                             ]
+                                                              }
+                                                 },
+                                        "text":  "{\"code\":200,\"message\":\"导入文件解析成功\",\"data\":{\"valid\":true,\"rows\":[{\"index\":0,\"excelRowNumber\":2,\"merchantName\":\"QA导入商户A_20260501055034\",\"photoType\":\"QA导入类型A_20260501055034\",\"customerInfo\":\"QA导入客户A\",\"photoCount\":\"2\",\"acceptUnitPrice\":\"12.34\",\"dispatchUnitPrice\":\"5.67\",\"orderNo\":\"QA_IMPORT_20260501055034_A\",\"orderedAt\":\"2026-05-01 05:50:00\",\"remark\":\"QA multi a\"},{\"index\":1,\"excelRowNumber\":3,\"merchantName\":\"QA导入商户A_20260501055034\",\"photoType\":\"QA导入类型B_20260501055034\",\"customerInfo\":\"QA导入客户B\",\"photoCount\":\"3\",\"acceptUnitPrice\":\"12.34\",\"dispatchUnitPrice\":\"5.67\",\"orderNo\":\"QA_IMPORT_20260501055034_B\",\"orderedAt\":\"2026-05-01 05:51:00\",\"remark\":\"QA multi b\"}],\"errors\":[]}}"
+                                    }
+                },
+    "derived":  {
+                    "multiMerchantNames":  [
+                                               "QA导入商户A_20260501055034",
+                                               "QA导入商户B_20260501055034"
+                                           ],
+                    "multiMerchantPhotos":  [
+                                                "QA导入类型A_20260501055034"
+                                            ],
+                    "multiPhotoNames":  [
+                                            "QA导入商户A_20260501055034"
+                                        ],
+                    "multiPhotoTypes":  [
+                                            "QA导入类型A_20260501055034",
+                                            "QA导入类型B_20260501055034"
+                                        ]
+                },
+    "validations":  {
+                        "validPreviewSuccess":  true,
+                        "validRowsParsed":  true,
+                        "missingOrderPreviewReturnsError":  true,
+                        "multiMerchantPreviewParsed":  true,
+                        "multiMerchantWouldBlockInUi":  true,
+                        "multiPhotoPreviewParsed":  true,
+                        "multiPhotoWouldBlockInUi":  true
+                    }
+}

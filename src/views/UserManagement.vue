@@ -23,7 +23,7 @@
       </el-form>
 
       <div class="user-table-panel">
-        <el-table v-loading="tableLoading" :data="users" border height="100%">
+        <el-table v-loading="tableLoading" :data="users" :cell-style="{ textAlign: 'center' }" :header-cell-style="{ textAlign: 'center' }" border height="100%">
           <el-table-column label="用户名" prop="realName" />
           <el-table-column label="登录账号" prop="username" />
           <el-table-column label="当前角色">
@@ -32,18 +32,29 @@
             </template>
           </el-table-column>
           <el-table-column label="创建时间" prop="createdAt" />
-          <el-table-column fixed="right" label="操作" width="136">
+          <el-table-column class-name="operation-column-cell" fixed="right" label="操作" width="136">
             <template #default="{ row }">
               <div class="user-action-buttons">
                 <el-button class="edit-button" plain size="small" type="primary" @click="openEditDialog(row)">编辑</el-button>
-                <el-button v-if="!isCurrentUser(row)" class="delete-button" plain size="small" type="danger" @click="handleDeleteUser(row)">删除</el-button>
+                <el-popconfirm
+                  v-if="!isCurrentUser(row)"
+                  :title="getDeleteUserTitle(row)"
+                  :width="getPopconfirmWidth(getDeleteUserTitle(row))"
+                  confirm-button-text="确认"
+                  cancel-button-text="取消"
+                  @confirm="handleDeleteUser(row)"
+                >
+                  <template #reference>
+                    <el-button class="delete-button" plain size="small" type="danger">删除</el-button>
+                  </template>
+                </el-popconfirm>
               </div>
             </template>
           </el-table-column>
         </el-table>
       </div>
 
-      <footer class="user-pagination">
+      <footer class="pagination">
         <el-pagination
           v-model:current-page="pagination.pageNo"
           v-model:page-size="pagination.pageSize"
@@ -95,13 +106,14 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { createUserApi, deleteUserApi, getUserListApi, updateUserApi } from '../api/users'
 import type { UserRole, UserStatus, UserVO } from '../api/types'
 import { RequestError } from '../libs/request'
 import { getStoredUser, setStoredUser } from '../libs/request/auth'
+import { getPopconfirmWidth } from '../utils/popconfirmWidth'
 
 type UserTableRole = Extract<UserRole, 'ADMIN' | 'DISPATCHER' | 'DESIGNER'>
 type EditableUserRole = Exclude<UserTableRole, 'ADMIN'>
@@ -323,18 +335,9 @@ const handleSaveUser = async () => {
   }
 }
 
-const handleDeleteUser = async (row: UserVO) => {
-  try {
-    await ElMessageBox.confirm(`确定删除账号“${row.username}”吗？删除后不可恢复。`, '删除确认', {
-      confirmButtonText: '删除',
-      cancelButtonText: '取消',
-      type: 'warning',
-      confirmButtonClass: 'el-button--danger'
-    })
-  } catch {
-    return
-  }
+const getDeleteUserTitle = (row: UserVO) => `确定删除账号“${row.username}”吗？删除后不可恢复。`
 
+const handleDeleteUser = async (row: UserVO) => {
   try {
     await deleteUserApi(row.id)
 
@@ -345,7 +348,10 @@ const handleDeleteUser = async (row: UserVO) => {
       await fetchUserList()
     }
 
-    ElMessage.success('删除成功')
+    ElMessage({
+      type: 'success',
+      message: '删除成功!',
+    })
   } catch (error) {
     ElMessage.error(getErrorMessage(error, '删除用户失败'))
   }
@@ -493,7 +499,7 @@ onMounted(() => {
   display: flex;
   gap: 8px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   white-space: nowrap;
 
   .el-button + .el-button {
@@ -501,7 +507,11 @@ onMounted(() => {
   }
 }
 
-.user-pagination {
+:deep(.operation-column-cell) {
+  text-align: left !important;
+}
+
+.pagination {
   display: flex;
   align-items: center;
   justify-content: center;

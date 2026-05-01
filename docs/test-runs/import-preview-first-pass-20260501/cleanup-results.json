@@ -1,0 +1,129 @@
+﻿{
+  "afterA": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "afterB": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "beforeA": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:53:16",
+            "id": 17,
+            "merchantName": "QA导入商户A_20260501055034",
+            "photoTypes": [
+              {
+                "acceptPrice": "12.34",
+                "dispatchPrice": "5.67",
+                "id": 32,
+                "photoType": "QA导入类型A_20260501055034"
+              },
+              {
+                "acceptPrice": "12.34",
+                "dispatchPrice": "5.67",
+                "id": 33,
+                "photoType": "QA导入类型B_20260501055034"
+              }
+            ]
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[{\"id\":17,\"merchantName\":\"QA导入商户A_20260501055034\",\"photoTypes\":[{\"id\":32,\"photoType\":\"QA导入类型A_20260501055034\",\"acceptPrice\":\"12.34\",\"dispatchPrice\":\"5.67\"},{\"id\":33,\"photoType\":\"QA导入类型B_20260501055034\",\"acceptPrice\":\"12.34\",\"dispatchPrice\":\"5.67\"}],\"createdAt\":\"2026-05-01 05:53:16\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "beforeB": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:53:16",
+            "id": 18,
+            "merchantName": "QA导入商户B_20260501055034",
+            "photoTypes": [
+              {
+                "acceptPrice": "12.34",
+                "dispatchPrice": "5.67",
+                "id": 34,
+                "photoType": "QA导入类型A_20260501055034"
+              }
+            ]
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[{\"id\":18,\"merchantName\":\"QA导入商户B_20260501055034\",\"photoTypes\":[{\"id\":34,\"photoType\":\"QA导入类型A_20260501055034\",\"acceptPrice\":\"12.34\",\"dispatchPrice\":\"5.67\"}],\"createdAt\":\"2026-05-01 05:53:16\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "deleteA": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除商户成功\",\"data\":true}"
+  },
+  "deleteB": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除商户成功\",\"data\":true}"
+  },
+  "ids": {
+    "merchantAId": 17,
+    "merchantBId": 18
+  },
+  "runAt": "2026-04-30T21:54:05.211Z",
+  "validations": {
+    "merchantADeleted": true,
+    "merchantAExisted": true,
+    "merchantARemoved": true,
+    "merchantBDeleted": true,
+    "merchantBExisted": true,
+    "merchantBRemoved": true
+  }
+}

@@ -59,7 +59,7 @@ export const getShopCustomerListApi = (shopId: number, params?: ShopCustomerList
     url: `/shops/${shopId}/customers`,
     method: 'GET',
     params,
-  })
+  }) as unknown as Promise<PageResponse<ShopCustomerVO>>
 
 /** 为指定商户创建客户信息。 */
 export const createShopCustomerApi = (shopId: number, data: SaveShopCustomerParams) =>
@@ -83,4 +83,3 @@ export const deleteShopCustomerApi = (id: number) =>
     url: `/shop-customers/${id}`,
     method: 'DELETE',
   })
-

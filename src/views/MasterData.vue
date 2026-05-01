@@ -7,12 +7,12 @@
 
     <main class="master-data-body">
       <div class="merchant-toolbar">
-        <el-input v-model.trim="filters.merchantName" clearable placeholder="请输入商户名称关键词" />
-        <el-button class="query-button" type="primary">搜索</el-button>
+        <el-input v-model.trim="filters.merchantName" clearable placeholder="请输入商户名称关键词" @clear="searchMerchants" @keyup.enter="searchMerchants" />
+        <el-button class="query-button" type="primary" @click="searchMerchants">搜索</el-button>
       </div>
 
       <div class="table-panel">
-        <el-table :data="pagedMerchantRows" border height="100%">
+        <el-table v-loading="isLoading" :data="merchantRows" :cell-style="{ textAlign: 'center' }" :header-cell-style="{ textAlign: 'center' }" border height="100%">
           <el-table-column label="商户名称" prop="merchantName" />
           <el-table-column label="照片类型">
             <template #default="{ row }: { row: MerchantRecord }">
@@ -21,28 +21,39 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="关联客户数量">
-            <template #default="{ row }: { row: MerchantRecord }">{{ row.customers.length }}</template>
-          </el-table-column>
           <el-table-column label="创建时间" prop="createdAt" />
-          <el-table-column fixed="right" label="操作" width="136">
+          <el-table-column class-name="operation-column-cell" fixed="right" label="操作" width="208">
             <template #default="{ row }: { row: MerchantRecord }">
               <div class="merchant-action-buttons">
                 <el-button class="detail-button" plain size="small" type="primary" @click="openDetailDialog(row)">详情</el-button>
                 <el-button class="edit-button" plain size="small" type="primary" @click="openEditDialog(row)">编辑</el-button>
+                <el-popconfirm
+                  :title="getDeleteMerchantTitle(row)"
+                  :width="getPopconfirmWidth(getDeleteMerchantTitle(row))"
+                  confirm-button-text="确认"
+                  cancel-button-text="取消"
+                  @confirm="deleteMerchant(row)"
+                >
+                  <template #reference>
+                    <el-button class="delete-button" plain size="small" type="danger">删除</el-button>
+                  </template>
+                </el-popconfirm>
               </div>
             </template>
           </el-table-column>
         </el-table>
       </div>
 
-      <footer class="pagination-panel">
+      <footer class="pagination">
         <el-pagination
           v-model:current-page="pagination.pageNo"
           v-model:page-size="pagination.pageSize"
+          :page-sizes="[15, 30, 45, 60]"
           :pager-count="5"
-          :total="filteredMerchantRows.length"
-          layout="total, prev, pager, next, jumper"
+          :total="merchantTotal"
+          layout="total, sizes, prev, pager, next, jumper"
+          @current-change="loadMerchants"
+          @size-change="handlePageSizeChange"
         />
       </footer>
     </main>
@@ -60,7 +71,7 @@
           <div class="section-title">
             <div>
               <span>照片类型</span>
-              <small>至少维护一种类型，每种类型都需要默认接单价和派单价</small>
+              <small>新增时可不填，编辑时可继续补充；已填写的类型需维护默认接单价和派单价</small>
             </div>
           </div>
 
@@ -68,7 +79,18 @@
             <div v-for="(item, index) in merchantForm.photoTypes" :key="item.id" class="photo-type-card">
               <div class="card-head">
                 <span>类型 {{ index + 1 }}</span>
-                <el-button v-if="!isReadOnlyMode" class="card-delete-button" :icon="Minus" text type="danger" title="删除" @click="removePhotoType(index)" />
+                <el-popconfirm
+                  v-if="!isReadOnlyMode"
+                  :title="deletePhotoTypeTitle"
+                  :width="getPopconfirmWidth(deletePhotoTypeTitle)"
+                  confirm-button-text="确认"
+                  cancel-button-text="取消"
+                  @confirm="removePhotoType(index)"
+                >
+                  <template #reference>
+                    <el-button class="card-delete-button" :icon="Minus" plain size="small" type="danger" title="删除" />
+                  </template>
+                </el-popconfirm>
               </div>
 
               <el-form-item label="照片类型" :prop="`photoTypes.${index}.photoType`" :rules="photoTypeNameRules">
@@ -76,11 +98,33 @@
               </el-form-item>
 
               <el-form-item label="默认接单价" :prop="`photoTypes.${index}.acceptPrice`" :rules="acceptPriceRules">
-                <el-input-number v-model="item.acceptPrice" :min="0" :precision="2" :step="1" placeholder="请输入默认接单价" />
+                <el-input-number
+                  v-model="item.acceptPrice"
+                  :min="0"
+                  :precision="PRICE_DECIMAL_PLACES"
+                  :step="1"
+                  disabled-scientific
+                  inputmode="decimal"
+                  placeholder="请输入默认接单价"
+                  @change="item.acceptPrice = normalizePriceNumber($event)"
+                  @input.capture="enforcePriceInput"
+                  @paste.capture="preventInvalidPricePaste"
+                />
               </el-form-item>
 
               <el-form-item label="默认派单价" :prop="`photoTypes.${index}.dispatchPrice`" :rules="dispatchPriceRules">
-                <el-input-number v-model="item.dispatchPrice" :min="0" :precision="2" :step="1" placeholder="请输入默认派单价" />
+                <el-input-number
+                  v-model="item.dispatchPrice"
+                  :min="0"
+                  :precision="PRICE_DECIMAL_PLACES"
+                  :step="1"
+                  disabled-scientific
+                  inputmode="decimal"
+                  placeholder="请输入默认派单价"
+                  @change="item.dispatchPrice = normalizePriceNumber($event)"
+                  @input.capture="enforcePriceInput"
+                  @paste.capture="preventInvalidPricePaste"
+                />
               </el-form-item>
             </div>
 
@@ -91,36 +135,6 @@
           </div>
         </section>
 
-        <section class="form-section">
-          <div class="section-title">
-            <div>
-              <span>客户信息</span>
-              <small>客户不是必填，可创建后继续编辑添加</small>
-            </div>
-          </div>
-
-          <div class="card-grid customer-grid">
-            <div v-for="(item, index) in merchantForm.customers" :key="item.id" class="customer-card">
-              <div class="card-head">
-                <span>客户 {{ index + 1 }}</span>
-                <el-button v-if="!isReadOnlyMode" class="card-delete-button" :icon="Minus" text type="danger" title="删除" @click="removeCustomer(index)" />
-              </div>
-
-              <el-form-item label="客户信息" :prop="`customers.${index}.customerName`" :rules="customerNameRules">
-                <el-input v-model.trim="item.customerName" placeholder="请输入客户信息" />
-              </el-form-item>
-
-              <el-form-item label="张数" :prop="`customers.${index}.photoCount`" :rules="photoCountRules">
-                <el-input-number v-model="item.photoCount" :min="1" :precision="0" :step="1" placeholder="请输入张数" />
-              </el-form-item>
-            </div>
-
-            <button v-if="!isReadOnlyMode" class="add-card" type="button" @click="addCustomer">
-              <span class="add-card-icon">+</span>
-              <span>添加客户</span>
-            </button>
-          </div>
-        </section>
       </el-form>
 
       <template #footer>
@@ -132,105 +146,98 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref, watch } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { computed, nextTick, onMounted, reactive, ref } from 'vue'
+import { ElMessage } from 'element-plus'
 import type { FormInstance, FormItemRule, FormRules } from 'element-plus'
 import { Minus, Plus } from '@element-plus/icons-vue'
-import type { MasterDataFilters, MasterDataPagination, MerchantCustomer, MerchantDialogForm, MerchantPhotoType, MerchantRecord } from '../types/MasterData'
+import {
+  createMerchantMasterApi,
+  deleteMerchantMasterApi,
+  getMerchantMasterDetailApi,
+  getMerchantMasterEditDataApi,
+  getMerchantMasterListApi,
+  updateMerchantMasterApi,
+  type MerchantMasterEditableVO,
+  type MerchantMasterRecordVO,
+} from '../api/merchantMaster'
+import type {
+  MasterDataFilters,
+  MasterDataPagination,
+  MerchantDialogForm,
+  MerchantId,
+  MerchantPhotoType,
+  MerchantRecord,
+} from '../types/MasterData'
+import { getPopconfirmWidth } from '../utils/popconfirmWidth'
+import { enforcePriceInput, normalizePriceNumber, PRICE_DECIMAL_PLACES, preventInvalidPricePaste, toPricePayload } from '../utils/price'
 
 type MerchantDialogMode = 'create' | 'edit' | 'detail'
 
-const pageSize = 16
+const deletePhotoTypeTitle = '确定删除该照片类型吗？对应的默认接单价和默认派单价也会一并删除。'
+
+const isLoading = ref(false)
 const merchantDialogVisible = ref(false)
 const merchantDialogMode = ref<MerchantDialogMode>('create')
-const editingMerchantId = ref<string | null>(null)
+const editingMerchantId = ref<MerchantId | null>(null)
 const merchantFormRef = ref<FormInstance>()
+const merchantRows = ref<MerchantRecord[]>([])
+const merchantTotal = ref(0)
 
 const pagination = reactive<MasterDataPagination>({
   pageNo: 1,
-  pageSize
+  pageSize: 15,
 })
 
 const filters = reactive<MasterDataFilters>({
-  merchantName: ''
+  merchantName: '',
 })
 
-const requiredRule = (message: string, trigger: 'blur' | 'change' = 'blur'): FormItemRule[] => [{ required: true, message, trigger }]
+const requiredRule = (message: string, trigger: 'blur' | 'change' = 'blur'): FormItemRule[] => [{ required: true, whitespace: true, message, trigger }]
 
 const merchantRules: FormRules<MerchantDialogForm> = {
-  merchantName: requiredRule('请输入商户名称')
+  merchantName: requiredRule('请输入商户名称'),
 }
 
 const photoTypeNameRules = requiredRule('请输入照片类型')
 const acceptPriceRules = requiredRule('请输入默认接单价', 'change')
 const dispatchPriceRules = requiredRule('请输入默认派单价', 'change')
-const customerNameRules = requiredRule('请输入客户信息')
-const photoCountRules = requiredRule('请输入张数', 'change')
 
 const createId = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`
 
-const createPhotoType = (photoType = '', acceptPrice: number | undefined = undefined, dispatchPrice: number | undefined = undefined): MerchantPhotoType => ({
-  id: createId('type'),
-  photoType,
-  acceptPrice,
-  dispatchPrice
-})
+type PhotoTypeSource = Partial<Omit<MerchantPhotoType, 'acceptPrice' | 'dispatchPrice'>> & {
+  acceptPrice?: unknown
+  dispatchPrice?: unknown
+  defaultAcceptPrice?: unknown
+  defaultDispatchPrice?: unknown
+}
 
-const createCustomer = (customerName = '', photoCount: number | undefined = undefined): MerchantCustomer => ({
-  id: createId('customer'),
-  customerName,
-  photoCount
+const createPhotoType = (source: PhotoTypeSource = {}): MerchantPhotoType => ({
+  id: source.id ?? createId('type'),
+  photoType: source.photoType ?? '',
+  acceptPrice: normalizePriceNumber(source.acceptPrice ?? source.defaultAcceptPrice),
+  dispatchPrice: normalizePriceNumber(source.dispatchPrice ?? source.defaultDispatchPrice),
 })
 
 const createEmptyForm = (): MerchantDialogForm => ({
   merchantName: '',
-  photoTypes: [createPhotoType()],
-  customers: []
+  photoTypes: [],
 })
+
+const normalizeMerchantRecord = (record: MerchantMasterRecordVO | MerchantMasterEditableVO, fallbackId: MerchantId = createId('merchant')): MerchantRecord => {
+  return {
+    id: record.id ?? fallbackId,
+    merchantName: record.merchantName ?? '',
+    photoTypes: (record.photoTypes ?? []).map(item => createPhotoType(item)),
+    createdAt: record.createdAt ?? '',
+  }
+}
 
 const cloneRecordToForm = (record: MerchantRecord): MerchantDialogForm => ({
   merchantName: record.merchantName,
   photoTypes: record.photoTypes.map(item => ({ ...item })),
-  customers: record.customers.map(item => ({ ...item }))
 })
 
 const merchantForm = reactive<MerchantDialogForm>(createEmptyForm())
-
-const merchantRows = reactive<MerchantRecord[]>([
-  {
-    id: 'merchant-1',
-    merchantName: '云帆摄影',
-    photoTypes: [createPhotoType('精修', 12, 8), createPhotoType('调色', 10, 7)],
-    customers: [createCustomer('李小姐', 18), createCustomer('张先生', 12)],
-    createdAt: '2026-04-01 10:20:00'
-  },
-  {
-    id: 'merchant-2',
-    merchantName: '木石电商',
-    photoTypes: [createPhotoType('抠图', 8, 5), createPhotoType('产品修图', 16, 11)],
-    customers: [createCustomer('王女士', 24)],
-    createdAt: '2026-04-02 10:20:00'
-  },
-  {
-    id: 'merchant-3',
-    merchantName: '星野婚礼',
-    photoTypes: [createPhotoType('精修', 18, 12)],
-    customers: [],
-    createdAt: '2026-04-03 10:20:00'
-  }
-])
-
-const filteredMerchantRows = computed(() => {
-  const keyword = filters.merchantName.trim()
-  if (!keyword) return merchantRows
-
-  return merchantRows.filter(item => item.merchantName.includes(keyword))
-})
-
-const pagedMerchantRows = computed(() => {
-  const start = (pagination.pageNo - 1) * pagination.pageSize
-  return filteredMerchantRows.value.slice(start, start + pagination.pageSize)
-})
 
 const isReadOnlyMode = computed(() => merchantDialogMode.value === 'detail')
 const dialogTitle = computed(() => {
@@ -239,20 +246,43 @@ const dialogTitle = computed(() => {
   return '新增商户'
 })
 
-watch(
-  () => filters.merchantName,
-  () => {
-    pagination.pageNo = 1
-  }
-)
+const getErrorMessage = (error: unknown, fallback: string) => {
+  return error instanceof Error && error.message ? error.message : fallback
+}
 
 const assignMerchantForm = (nextForm: MerchantDialogForm) => {
   merchantForm.merchantName = nextForm.merchantName
   merchantForm.photoTypes = nextForm.photoTypes
-  merchantForm.customers = nextForm.customers
 }
 
-const nowString = () => new Date().toLocaleString('zh-CN', { hour12: false })
+const loadMerchants = async () => {
+  isLoading.value = true
+
+  try {
+    const result = await getMerchantMasterListApi({
+      pageNo: pagination.pageNo,
+      pageSize: pagination.pageSize,
+      merchantName: filters.merchantName.trim() || undefined,
+    })
+
+    merchantRows.value = result.records.map(item => normalizeMerchantRecord(item))
+    merchantTotal.value = result.total
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '商户列表加载失败'))
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const searchMerchants = () => {
+  pagination.pageNo = 1
+  void loadMerchants()
+}
+
+const handlePageSizeChange = () => {
+  pagination.pageNo = 1
+  void loadMerchants()
+}
 
 const openCreateDialog = async () => {
   merchantDialogMode.value = 'create'
@@ -264,21 +294,31 @@ const openCreateDialog = async () => {
 }
 
 const openEditDialog = async (row: MerchantRecord) => {
-  merchantDialogMode.value = 'edit'
-  editingMerchantId.value = row.id
-  assignMerchantForm(cloneRecordToForm(row))
-  merchantDialogVisible.value = true
-  await nextTick()
-  merchantFormRef.value?.clearValidate()
+  try {
+    const record = normalizeMerchantRecord(await getMerchantMasterEditDataApi(row.id), row.id)
+    merchantDialogMode.value = 'edit'
+    editingMerchantId.value = row.id
+    assignMerchantForm(cloneRecordToForm(record))
+    merchantDialogVisible.value = true
+    await nextTick()
+    merchantFormRef.value?.clearValidate()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '商户编辑数据加载失败'))
+  }
 }
 
 const openDetailDialog = async (row: MerchantRecord) => {
-  merchantDialogMode.value = 'detail'
-  editingMerchantId.value = row.id
-  assignMerchantForm(cloneRecordToForm(row))
-  merchantDialogVisible.value = true
-  await nextTick()
-  merchantFormRef.value?.clearValidate()
+  try {
+    const record = normalizeMerchantRecord(await getMerchantMasterDetailApi(row.id), row.id)
+    merchantDialogMode.value = 'detail'
+    editingMerchantId.value = row.id
+    assignMerchantForm(cloneRecordToForm(record))
+    merchantDialogVisible.value = true
+    await nextTick()
+    merchantFormRef.value?.clearValidate()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '商户详情加载失败'))
+  }
 }
 
 const addPhotoType = () => {
@@ -286,46 +326,14 @@ const addPhotoType = () => {
   merchantForm.photoTypes.push(createPhotoType())
 }
 
-const confirmDelete = async (message: string) => {
-  try {
-    await ElMessageBox.confirm(message, '删除确认', {
-      confirmButtonText: '删除',
-      cancelButtonText: '取消',
-      type: 'warning',
-      confirmButtonClass: 'el-button--danger'
-    })
-    return true
-  } catch {
-    return false
-  }
-}
-
-const removePhotoType = async (index: number) => {
+const removePhotoType = (index: number) => {
   if (isReadOnlyMode.value) return
-
-  if (merchantForm.photoTypes.length <= 1) {
-    ElMessage.warning('至少保留一种照片类型')
-    return
-  }
-
-  const confirmed = await confirmDelete('确定删除该照片类型吗？对应的默认接单价和默认派单价也会一并删除。')
-  if (!confirmed) return
 
   merchantForm.photoTypes.splice(index, 1)
-}
-
-const addCustomer = () => {
-  if (isReadOnlyMode.value) return
-  merchantForm.customers.push(createCustomer())
-}
-
-const removeCustomer = async (index: number) => {
-  if (isReadOnlyMode.value) return
-
-  const confirmed = await confirmDelete('确定删除该客户信息吗？')
-  if (!confirmed) return
-
-  merchantForm.customers.splice(index, 1)
+  ElMessage({
+    type: 'success',
+    message: '删除成功!',
+  })
 }
 
 const resetMerchantForm = () => {
@@ -335,14 +343,25 @@ const resetMerchantForm = () => {
   merchantFormRef.value?.clearValidate()
 }
 
+const buildMerchantPayload = () => ({
+  merchantName: merchantForm.merchantName,
+  photoTypes: merchantForm.photoTypes.map(item => {
+    const acceptPrice = toPricePayload(item.acceptPrice)
+    const dispatchPrice = toPricePayload(item.dispatchPrice)
+
+    return {
+      photoType: item.photoType,
+      acceptPrice,
+      dispatchPrice,
+      defaultAcceptPrice: acceptPrice,
+      defaultDispatchPrice: dispatchPrice,
+    }
+  }),
+})
+
 const submitMerchantForm = async () => {
   if (isReadOnlyMode.value) return
   if (!merchantFormRef.value) return
-
-  if (merchantForm.photoTypes.length === 0) {
-    ElMessage.warning('至少添加一种照片类型')
-    return
-  }
 
   try {
     await merchantFormRef.value.validate()
@@ -350,27 +369,48 @@ const submitMerchantForm = async () => {
     return
   }
 
-  const nextRecord = {
-    merchantName: merchantForm.merchantName,
-    photoTypes: merchantForm.photoTypes.map(item => ({ ...item })),
-    customers: merchantForm.customers.map(item => ({ ...item }))
-  }
-
-  if (editingMerchantId.value) {
-    const target = merchantRows.find(item => item.id === editingMerchantId.value)
-    if (target) {
-      Object.assign(target, nextRecord)
+  try {
+    if (editingMerchantId.value) {
+      await updateMerchantMasterApi({
+        id: editingMerchantId.value,
+        ...buildMerchantPayload(),
+      })
+      ElMessage.success('商户保存成功')
+    } else {
+      await createMerchantMasterApi(buildMerchantPayload())
+      ElMessage.success('商户新增成功')
     }
-  } else {
-    merchantRows.unshift({
-      id: createId('merchant'),
-      ...nextRecord,
-      createdAt: nowString()
-    })
-  }
 
-  merchantDialogVisible.value = false
+    merchantDialogVisible.value = false
+    await loadMerchants()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '商户保存失败'))
+  }
 }
+
+const getDeleteMerchantTitle = (row: MerchantRecord) => `确定删除商户“${row.merchantName}”吗？该操作会删除商户关联数据。`
+
+const deleteMerchant = async (row: MerchantRecord) => {
+  try {
+    await deleteMerchantMasterApi(row.id)
+    ElMessage({
+      type: 'success',
+      message: '删除成功!',
+    })
+
+    if (merchantRows.value.length === 1 && pagination.pageNo > 1) {
+      pagination.pageNo -= 1
+    }
+
+    await loadMerchants()
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '商户删除失败'))
+  }
+}
+
+onMounted(() => {
+  void loadMerchants()
+})
 </script>
 
 <style lang="scss">
@@ -425,8 +465,6 @@ const submitMerchantForm = async () => {
   align-items: center;
   align-content: center;
   padding: 0 22px;
-  background: #f8fbff;
-  border-bottom: 1px solid #e1e9f5;
 
   .el-input__wrapper {
     min-height: 34px;
@@ -491,11 +529,17 @@ const submitMerchantForm = async () => {
   display: flex;
   gap: 8px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   white-space: nowrap;
 
   .el-button + .el-button {
     margin-left: 0;
+  }
+}
+
+.master-data-view {
+  .operation-column-cell {
+    text-align: left !important;
   }
 }
 
@@ -508,35 +552,13 @@ const submitMerchantForm = async () => {
   border-radius: 8px;
 }
 
-.master-data-view .pagination-panel {
+.master-data-view .pagination {
   display: flex;
   align-items: center;
   justify-content: center;
 
   .el-pager {
     gap: 6px;
-  }
-
-  .el-pagination button,
-  .el-pager li {
-    min-width: 32px;
-    height: 32px;
-    border: 1px solid #d8e5f8;
-    border-radius: 8px;
-  }
-
-  .el-pager li.is-active {
-    color: #fff;
-    background: #2563eb;
-    border-color: #2563eb;
-  }
-
-  .el-pagination__jump {
-    margin-left: 18px;
-  }
-
-  .el-pagination__editor.el-input {
-    width: 48px;
   }
 }
 
@@ -655,13 +677,11 @@ const submitMerchantForm = async () => {
     gap: 14px;
   }
 
-  .photo-type-grid,
-  .customer-grid {
+  .photo-type-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .photo-type-card,
-  .customer-card,
   .add-card {
     position: relative;
     display: grid;
@@ -674,8 +694,7 @@ const submitMerchantForm = async () => {
     transition: border-color 0.18s ease;
   }
 
-  .photo-type-card,
-  .customer-card {
+  .photo-type-card {
 
     &:hover {
       border-color: #7aa7ff;
@@ -800,8 +819,7 @@ const submitMerchantForm = async () => {
   }
 
   .merchant-dialog {
-    .photo-type-grid,
-    .customer-grid {
+    .photo-type-grid {
       grid-template-columns: 1fr;
     }
   }

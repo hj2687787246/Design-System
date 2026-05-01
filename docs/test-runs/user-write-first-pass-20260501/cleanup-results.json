@@ -1,0 +1,30 @@
+﻿{
+  "afterCleanup": {
+    "designerRecords": [],
+    "designerTotal": 0,
+    "dispatcherRecords": [],
+    "dispatcherTotal": 0
+  },
+  "deleteDesigner": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除账号成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除账号成功\",\"data\":true}"
+  },
+  "runAt": "2026-04-30T21:32:07.245Z",
+  "testData": {
+    "designerUsername": "qa_designer_20260501053041",
+    "dispatcherUsername": "qa_dispatcher_20260501053041",
+    "password": "123321",
+    "stamp": "20260501053041"
+  },
+  "validations": {
+    "designerDeleted": true,
+    "designerRemoved": true,
+    "dispatcherRemoved": true
+  }
+}

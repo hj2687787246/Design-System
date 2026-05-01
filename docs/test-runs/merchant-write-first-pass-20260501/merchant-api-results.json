@@ -1,0 +1,257 @@
+﻿{
+  "createEmpty": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:34:12",
+        "id": 11,
+        "merchantName": "QA空类型商户_20260501053349",
+        "photoTypes": []
+      },
+      "message": "新增商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"新增商户成功\",\"data\":{\"id\":11,\"merchantName\":\"QA空类型商户_20260501053349\",\"photoTypes\":[],\"createdAt\":\"2026-05-01 05:34:12\"}}"
+  },
+  "createFull": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:34:12",
+        "id": 12,
+        "merchantName": "QA带类型商户_20260501053349",
+        "photoTypes": [
+          {
+            "acceptPrice": "1.11",
+            "dispatchPrice": "2.22",
+            "id": 22,
+            "photoType": "QA类型A_20260501053349"
+          }
+        ]
+      },
+      "message": "新增商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"新增商户成功\",\"data\":{\"id\":12,\"merchantName\":\"QA带类型商户_20260501053349\",\"photoTypes\":[{\"id\":22,\"photoType\":\"QA类型A_20260501053349\",\"acceptPrice\":\"1.11\",\"dispatchPrice\":\"2.22\"}],\"createdAt\":\"2026-05-01 05:34:12\"}}"
+  },
+  "editDataAfterCreate": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "merchantName": "QA带类型商户_20260501053349",
+        "photoTypes": [
+          {
+            "acceptPrice": "1.11",
+            "dispatchPrice": "2.22",
+            "id": 22,
+            "photoType": "QA类型A_20260501053349"
+          }
+        ]
+      },
+      "message": "查询商户编辑数据成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户编辑数据成功\",\"data\":{\"merchantName\":\"QA带类型商户_20260501053349\",\"photoTypes\":[{\"id\":22,\"photoType\":\"QA类型A_20260501053349\",\"acceptPrice\":\"1.11\",\"dispatchPrice\":\"2.22\"}]}}"
+  },
+  "emptyList": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:34:12",
+            "id": 11,
+            "merchantName": "QA空类型商户_20260501053349",
+            "photoTypes": []
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[{\"id\":11,\"merchantName\":\"QA空类型商户_20260501053349\",\"photoTypes\":[],\"createdAt\":\"2026-05-01 05:34:12\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "fullEditDataFinal": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "merchantName": "QA带类型商户_20260501053349",
+        "photoTypes": [
+          {
+            "acceptPrice": "5.56",
+            "dispatchPrice": "6.67",
+            "id": 27,
+            "photoType": "QA类型A_20260501053349"
+          }
+        ]
+      },
+      "message": "查询商户编辑数据成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户编辑数据成功\",\"data\":{\"merchantName\":\"QA带类型商户_20260501053349\",\"photoTypes\":[{\"id\":27,\"photoType\":\"QA类型A_20260501053349\",\"acceptPrice\":\"5.56\",\"dispatchPrice\":\"6.67\"}]}}"
+  },
+  "fullListAfterCreate": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:34:12",
+            "id": 12,
+            "merchantName": "QA带类型商户_20260501053349",
+            "photoTypes": [
+              {
+                "acceptPrice": "1.11",
+                "dispatchPrice": "2.22",
+                "id": 22,
+                "photoType": "QA类型A_20260501053349"
+              }
+            ]
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[{\"id\":12,\"merchantName\":\"QA带类型商户_20260501053349\",\"photoTypes\":[{\"id\":22,\"photoType\":\"QA类型A_20260501053349\",\"acceptPrice\":\"1.11\",\"dispatchPrice\":\"2.22\"}],\"createdAt\":\"2026-05-01 05:34:12\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "fullListFinal": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:34:12",
+            "id": 12,
+            "merchantName": "QA带类型商户_20260501053349",
+            "photoTypes": [
+              {
+                "acceptPrice": "5.56",
+                "dispatchPrice": "6.67",
+                "id": 27,
+                "photoType": "QA类型A_20260501053349"
+              }
+            ]
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[{\"id\":12,\"merchantName\":\"QA带类型商户_20260501053349\",\"photoTypes\":[{\"id\":27,\"photoType\":\"QA类型A_20260501053349\",\"acceptPrice\":\"5.56\",\"dispatchPrice\":\"6.67\"}],\"createdAt\":\"2026-05-01 05:34:12\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "ids": {
+    "emptyId": 11,
+    "fullId": 12
+  },
+  "runAt": "2026-04-30T21:34:10.900Z",
+  "testData": {
+    "emptyMerchant": "QA空类型商户_20260501053349",
+    "fullMerchant": "QA带类型商户_20260501053349",
+    "stamp": "20260501053349",
+    "typeA": "QA类型A_20260501053349",
+    "typeB": "QA类型B_20260501053349",
+    "typeC": "QA类型C_20260501053349"
+  },
+  "updateAddType": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:34:12",
+        "id": 12,
+        "merchantName": "QA带类型商户_20260501053349",
+        "photoTypes": [
+          {
+            "acceptPrice": "1.11",
+            "dispatchPrice": "2.22",
+            "id": 23,
+            "photoType": "QA类型A_20260501053349"
+          },
+          {
+            "acceptPrice": "3.33",
+            "dispatchPrice": "4.44",
+            "id": 24,
+            "photoType": "QA类型B_20260501053349"
+          }
+        ]
+      },
+      "message": "保存商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"保存商户成功\",\"data\":{\"id\":12,\"merchantName\":\"QA带类型商户_20260501053349\",\"photoTypes\":[{\"id\":23,\"photoType\":\"QA类型A_20260501053349\",\"acceptPrice\":\"1.11\",\"dispatchPrice\":\"2.22\"},{\"id\":24,\"photoType\":\"QA类型B_20260501053349\",\"acceptPrice\":\"3.33\",\"dispatchPrice\":\"4.44\"}],\"createdAt\":\"2026-05-01 05:34:12\"}}"
+  },
+  "updatePrices": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:34:12",
+        "id": 12,
+        "merchantName": "QA带类型商户_20260501053349",
+        "photoTypes": [
+          {
+            "acceptPrice": "5.56",
+            "dispatchPrice": "6.67",
+            "id": 25,
+            "photoType": "QA类型A_20260501053349"
+          },
+          {
+            "acceptPrice": "7.78",
+            "dispatchPrice": "8.89",
+            "id": 26,
+            "photoType": "QA类型B_20260501053349"
+          }
+        ]
+      },
+      "message": "保存商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"保存商户成功\",\"data\":{\"id\":12,\"merchantName\":\"QA带类型商户_20260501053349\",\"photoTypes\":[{\"id\":25,\"photoType\":\"QA类型A_20260501053349\",\"acceptPrice\":\"5.56\",\"dispatchPrice\":\"6.67\"},{\"id\":26,\"photoType\":\"QA类型B_20260501053349\",\"acceptPrice\":\"7.78\",\"dispatchPrice\":\"8.89\"}],\"createdAt\":\"2026-05-01 05:34:12\"}}"
+  },
+  "updateRemoveType": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:34:12",
+        "id": 12,
+        "merchantName": "QA带类型商户_20260501053349",
+        "photoTypes": [
+          {
+            "acceptPrice": "5.56",
+            "dispatchPrice": "6.67",
+            "id": 27,
+            "photoType": "QA类型A_20260501053349"
+          }
+        ]
+      },
+      "message": "保存商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"保存商户成功\",\"data\":{\"id\":12,\"merchantName\":\"QA带类型商户_20260501053349\",\"photoTypes\":[{\"id\":27,\"photoType\":\"QA类型A_20260501053349\",\"acceptPrice\":\"5.56\",\"dispatchPrice\":\"6.67\"}],\"createdAt\":\"2026-05-01 05:34:12\"}}"
+  },
+  "validations": {
+    "addTypePassed": true,
+    "createEmptyPassed": true,
+    "createFullPassed": true,
+    "removeTypePassed": true,
+    "updatePricePassed": false
+  }
+}

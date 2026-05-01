@@ -1,0 +1,64 @@
+﻿{
+    "id":  "DESIGNER-006",
+    "name":  "设计师时间范围筛选",
+    "request":  {
+                    "dateRange":  [
+                                      "2026-05-01 00:00:00",
+                                      "2026-05-01 23:59:59"
+                                  ],
+                    "endTime":  "2026-05-01 23:59:59",
+                    "pageNo":  1,
+                    "pageSize":  15,
+                    "startTime":  "2026-05-01 00:00:00"
+                },
+    "response":  {
+                     "httpStatus":  200,
+                     "json":  {
+                                  "code":  200,
+                                  "data":  {
+                                               "pageNo":  1,
+                                               "pageSize":  15,
+                                               "records":  [
+                                                               {
+                                                                   "completedAt":  "",
+                                                                   "customer":  "abccd",
+                                                                   "designer":  "设计师强sir",
+                                                                   "id":  17,
+                                                                   "merchant":  "何永杰专卖店",
+                                                                   "orderNo":  "123321",
+                                                                   "orderedAt":  "2026-05-01 02:48:08",
+                                                                   "photoCount":  1,
+                                                                   "photoType":  "婚纱",
+                                                                   "remark":  "123321",
+                                                                   "status":  "未完工",
+                                                                   "statusClass":  "blue"
+                                                               }
+                                                           ],
+                                               "total":  1
+                                           },
+                                  "message":  "查询设计师订单成功"
+                              },
+                     "ok":  true,
+                     "text":  "{\"code\":200,\"message\":\"查询设计师订单成功\",\"data\":{\"records\":[{\"id\":17,\"merchant\":\"何永杰专卖店\",\"photoType\":\"婚纱\",\"status\":\"未完工\",\"designer\":\"设计师强sir\",\"orderNo\":\"123321\",\"photoCount\":1,\"customer\":\"abccd\",\"remark\":\"123321\",\"orderedAt\":\"2026-05-01 02:48:08\",\"completedAt\":\"\",\"statusClass\":\"blue\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+                 },
+    "validation":  {
+                       "failures":  [
+
+                                    ],
+                       "passed":  true,
+                       "recordCount":  1,
+                       "sampleRecords":  [
+                                             {
+                                                 "customer":  "abccd",
+                                                 "designer":  "设计师强sir",
+                                                 "id":  17,
+                                                 "merchant":  "何永杰专卖店",
+                                                 "orderNo":  "123321",
+                                                 "orderedAt":  "2026-05-01 02:48:08",
+                                                 "photoType":  "婚纱",
+                                                 "status":  "未完工"
+                                             }
+                                         ],
+                       "total":  1
+                   }
+}

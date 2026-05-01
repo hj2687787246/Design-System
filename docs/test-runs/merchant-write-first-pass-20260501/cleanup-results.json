@@ -1,0 +1,47 @@
+﻿{
+  "afterCleanup": {
+    "emptyRecords": [],
+    "emptyTotal": 0,
+    "fullRecords": [],
+    "fullTotal": 0
+  },
+  "deleteEmpty": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除商户成功\",\"data\":true}"
+  },
+  "deleteFull": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除商户成功\",\"data\":true}"
+  },
+  "ids": {
+    "emptyId": 11,
+    "fullId": 12
+  },
+  "runAt": "2026-04-30T21:34:42.038Z",
+  "testData": {
+    "emptyMerchant": "QA空类型商户_20260501053349",
+    "fullMerchant": "QA带类型商户_20260501053349",
+    "stamp": "20260501053349",
+    "typeA": "QA类型A_20260501053349",
+    "typeB": "QA类型B_20260501053349",
+    "typeC": "QA类型C_20260501053349"
+  },
+  "validations": {
+    "deleteEmptyPassed": true,
+    "deleteFullPassed": true,
+    "emptyRemoved": true,
+    "fullRemoved": true
+  }
+}

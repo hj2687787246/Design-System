@@ -1,0 +1,17 @@
+﻿[43488.28] POST http://127.0.0.1:5187/api/auth/login (XHR) 200
+[43488.31] GET http://127.0.0.1:5187/src/api/users.ts (Script) 200
+[43488.75] GET http://127.0.0.1:5187/src/api/users.ts (Script) 200
+[43488.82] GET http://127.0.0.1:5187/api/users?pageNo=1&pageSize=15 (XHR) 200
+[43488.83] POST http://127.0.0.1:5187/api/users (XHR) 200
+[43488.84] GET http://127.0.0.1:5187/api/users?pageNo=1&pageSize=15 (XHR) 200
+[43488.85] PUT http://127.0.0.1:5187/api/users/30?user_id=30 (XHR) 200
+[43488.86] GET http://127.0.0.1:5187/api/users?pageNo=1&pageSize=15 (XHR) 200
+[43488.88] POST http://127.0.0.1:5187/api/users (Fetch) 200
+[43488.89] POST http://127.0.0.1:5187/api/users (Fetch) 409
+[43488.90] GET http://127.0.0.1:5187/api/users?pageNo=1&pageSize=15&keyword=qa_dispatcher_20260501053041 (Fetch) 200
+[43488.91] GET http://127.0.0.1:5187/api/users?pageNo=1&pageSize=15&keyword=qa_designer_20260501053041 (Fetch) 200
+[43488.92] DELETE http://127.0.0.1:5187/api/users/30 (XHR) 200
+[43488.93] GET http://127.0.0.1:5187/api/users?pageNo=1&pageSize=15 (XHR) 200
+[43488.96] DELETE http://127.0.0.1:5187/api/users/31 (Fetch) 200
+[43488.97] GET http://127.0.0.1:5187/api/users?pageNo=1&pageSize=15&keyword=qa_dispatcher_20260501053041 (Fetch) 200
+[43488.98] GET http://127.0.0.1:5187/api/users?pageNo=1&pageSize=15&keyword=qa_designer_20260501053041 (Fetch) 200

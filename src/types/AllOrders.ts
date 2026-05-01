@@ -1,8 +1,15 @@
+export type OrderId = number | string
+
 export interface AllOrder {
+  id: OrderId
   index: number
+  shopId?: OrderId
+  productTypeId?: OrderId
   merchant: string
   photoType: string
+  statusCode?: string
   status: string
+  designerId?: OrderId | null
   designer: string
   orderNo: string
   photoCount: number
@@ -17,7 +24,9 @@ export interface AllOrder {
 }
 
 export interface AllOrderSummary {
+  id: OrderId
   index: number
+  shopId?: OrderId
   merchant: string
   orderCount: number
   photoCount: number
@@ -28,10 +37,10 @@ export interface AllOrderSummary {
 }
 
 export interface AllOrdersFilters {
-  merchants: string[]
+  merchants: OrderId[]
   photoTypes: string[]
   statuses: string[]
-  designers: string[]
+  designers: OrderId[]
   dateRange: string[]
   keyword: string
 }
@@ -54,3 +63,9 @@ export type AllOrderSourceRow = [
   remark: string,
   orderedAt: string,
 ]
+
+export interface AllOrderGroup {
+  groupId?: OrderId
+  groupName: string
+  orders: AllOrder[]
+}

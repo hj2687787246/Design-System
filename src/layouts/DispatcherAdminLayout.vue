@@ -10,7 +10,7 @@
 
       <div class="user-area">
         <span class="user-name">{{ userName }}</span>
-        <el-dropdown trigger="click" @command="handleUserCommand">
+        <el-dropdown placement="bottom-end" popper-class="account-menu-popper" trigger="click" @command="handleUserCommand">
           <button class="user-avatar" type="button" title="账户菜单">
             <el-icon>
               <User />
@@ -19,8 +19,8 @@
 
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="account">修改账户</el-dropdown-item>
-              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+              <el-dropdown-item :icon="EditPen" command="account">修改账户</el-dropdown-item>
+              <el-dropdown-item :icon="SwitchButton" command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -31,7 +31,9 @@
       <aside class="sidebar">
         <nav class="sidebar-menu" aria-label="后台菜单">
           <button v-for="item in visibleMenus" :key="item.path" :class="{ active: isActive(item.path) }" type="button" @click="router.push(item.path)">
-            <span class="menu-icon" aria-hidden="true">{{ item.icon }}</span>
+            <el-icon class="menu-icon" aria-hidden="true">
+              <component :is="item.icon" />
+            </el-icon>
             <span>{{ item.label }}</span>
           </button>
         </nav>
@@ -73,9 +75,10 @@
 
 <script setup lang="ts">
 import { computed, nextTick, reactive, ref } from 'vue'
+import type { Component } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { Grid, User } from '@element-plus/icons-vue'
+import { EditPen, Grid, Shop, SwitchButton, Tickets, User, UserFilled } from '@element-plus/icons-vue'
 import { RouterView, useRoute, useRouter } from 'vue-router'
 import { logoutApi } from '../api/auth'
 import { updateUserApi } from '../api/users'
@@ -88,7 +91,7 @@ type ManagerRole = 'DISPATCHER' | 'ADMIN'
 interface MenuItem {
   label: string
   path: string
-  icon: string
+  icon: Component
   roles: ManagerRole[]
 }
 
@@ -130,15 +133,14 @@ const accountRules = reactive<FormRules<AccountForm>>({
 })
 
 const menus: MenuItem[] = [
-  { label: '全部订单', path: '/orders', icon: '目', roles: ['DISPATCHER', 'ADMIN'] },
-  { label: '商户管理', path: '/master-data', icon: '◉', roles: ['DISPATCHER', 'ADMIN'] },
-  { label: '用户管理', path: '/user-management', icon: '♙', roles: ['ADMIN'] }
+  { label: '全部订单', path: '/orders', icon: Tickets, roles: ['DISPATCHER', 'ADMIN'] },
+  { label: '商户管理', path: '/master-data', icon: Shop, roles: ['DISPATCHER', 'ADMIN'] },
+  { label: '用户管理', path: '/user-management', icon: UserFilled, roles: ['ADMIN'] }
 ]
 
 const userRole = computed<ManagerRole>(() => (storedUser.value?.role === 'ADMIN' ? 'ADMIN' : 'DISPATCHER'))
 const userName = computed(() => storedUser.value?.realName || storedUser.value?.username || roleNameMap[userRole.value])
-// const visibleMenus = computed(() => menus.filter(item => item.roles.includes(userRole.value)))
-const visibleMenus = computed(() => menus)
+const visibleMenus = computed(() => menus.filter(item => item.roles.includes(userRole.value)))
 
 const getErrorMessage = (error: unknown, fallback: string) => (error instanceof RequestError ? error.message : fallback)
 
@@ -517,9 +519,9 @@ const handleSaveAccount = async () => {
 }
 
 .menu-icon {
-  width: 12px;
+  width: 17px;
   color: currentColor;
-  font-size: 14px;
+  font-size: 19px;
   line-height: 1;
   text-align: center;
 }

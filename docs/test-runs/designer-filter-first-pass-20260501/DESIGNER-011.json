@@ -1,0 +1,108 @@
+﻿{
+    "id":  "DESIGNER-011",
+    "name":  "设计师商家明细弹窗接口",
+    "request":  {
+                    "method":  "GET",
+                    "url":  "/api/designer/orders/shop-groups"
+                },
+    "response":  {
+                     "httpStatus":  200,
+                     "json":  {
+                                  "code":  200,
+                                  "data":  [
+                                               {
+                                                   "groupId":  10,
+                                                   "groupName":  "何永杰专卖店",
+                                                   "name":  "何永杰专卖店",
+                                                   "orders":  [
+                                                                  {
+                                                                      "customer":  "abccd",
+                                                                      "customerInfo":  "abccd",
+                                                                      "designer":  "设计师强sir",
+                                                                      "designerName":  "设计师强sir",
+                                                                      "dispatchPrice":  1.2,
+                                                                      "id":  17,
+                                                                      "merchant":  "何永杰专卖店",
+                                                                      "orderNo":  "123321",
+                                                                      "orderedAt":  "2026-05-01 02:48:08",
+                                                                      "photoCount":  1,
+                                                                      "photoType":  "婚纱",
+                                                                      "productTypeName":  "婚纱",
+                                                                      "receivePrice":  3.5,
+                                                                      "remark":  "123321",
+                                                                      "shopName":  "何永杰专卖店",
+                                                                      "status":  "未完工",
+                                                                      "statusName":  "未完工"
+                                                                  }
+                                                              ]
+                                               },
+                                               {
+                                                   "groupId":  8,
+                                                   "groupName":  "测试商户957",
+                                                   "name":  "测试商户957",
+                                                   "orders":  [
+                                                                  {
+                                                                      "customer":  "测试客户2",
+                                                                      "customerInfo":  "测试客户2",
+                                                                      "designer":  "设计师强sir",
+                                                                      "designerName":  "设计师强sir",
+                                                                      "dispatchPrice":  10,
+                                                                      "id":  13,
+                                                                      "merchant":  "测试商户957",
+                                                                      "orderNo":  "1",
+                                                                      "orderedAt":  "2026-04-30 22:40:04",
+                                                                      "photoCount":  3,
+                                                                      "photoType":  "测试照片类型1",
+                                                                      "productTypeName":  "测试照片类型1",
+                                                                      "receivePrice":  12,
+                                                                      "remark":  "备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1",
+                                                                      "shopName":  "测试商户957",
+                                                                      "status":  "问题件",
+                                                                      "statusName":  "问题件"
+                                                                  }
+                                                              ]
+                                               }
+                                           ],
+                                  "message":  "查询商家明细成功"
+                              },
+                     "ok":  true,
+                     "text":  "{\"code\":200,\"message\":\"查询商家明细成功\",\"data\":[{\"name\":\"何永杰专卖店\",\"groupId\":10,\"groupName\":\"何永杰专卖店\",\"orders\":[{\"id\":17,\"merchant\":\"何永杰专卖店\",\"shopName\":\"何永杰专卖店\",\"designer\":\"设计师强sir\",\"designerName\":\"设计师强sir\",\"customer\":\"abccd\",\"customerInfo\":\"abccd\",\"photoType\":\"婚纱\",\"productTypeName\":\"婚纱\",\"status\":\"未完工\",\"statusName\":\"未完工\",\"orderNo\":\"123321\",\"photoCount\":1,\"receivePrice\":3.5,\"dispatchPrice\":1.2,\"orderedAt\":\"2026-05-01 02:48:08\",\"remark\":\"123321\"}]},{\"name\":\"测试商户957\",\"groupId\":8,\"groupName\":\"测试商户957\",\"orders\":[{\"id\":13,\"merchant\":\"测试商户957\",\"shopName\":\"测试商户957\",\"designer\":\"设计师强sir\",\"designerName\":\"设计师强sir\",\"customer\":\"测试客户2\",\"customerInfo\":\"测试客户2\",\"photoType\":\"测试照片类型1\",\"productTypeName\":\"测试照片类型1\",\"status\":\"问题件\",\"statusName\":\"问题件\",\"orderNo\":\"1\",\"photoCount\":3,\"receivePrice\":12.0,\"dispatchPrice\":10.0,\"orderedAt\":\"2026-04-30 22:40:04\",\"remark\":\"备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1备注1\"}]}]}"
+                 },
+    "validation":  {
+                       "failures":  [
+
+                                    ],
+                       "groupCount":  2,
+                       "passed":  true,
+                       "sampleGroups":  [
+                                            {
+                                                "groupId":  10,
+                                                "groupName":  "何永杰专卖店",
+                                                "orderCount":  1,
+                                                "sampleOrders":  [
+                                                                     {
+                                                                         "customer":  "abccd",
+                                                                         "id":  17,
+                                                                         "merchant":  "何永杰专卖店",
+                                                                         "orderNo":  "123321",
+                                                                         "orderedAt":  "2026-05-01 02:48:08"
+                                                                     }
+                                                                 ]
+                                            },
+                                            {
+                                                "groupId":  8,
+                                                "groupName":  "测试商户957",
+                                                "orderCount":  1,
+                                                "sampleOrders":  [
+                                                                     {
+                                                                         "customer":  "测试客户2",
+                                                                         "id":  13,
+                                                                         "merchant":  "测试商户957",
+                                                                         "orderNo":  "1",
+                                                                         "orderedAt":  "2026-04-30 22:40:04"
+                                                                     }
+                                                                 ]
+                                            }
+                                        ]
+                   }
+}

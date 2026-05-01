@@ -32,6 +32,7 @@
           start-placeholder="开始时间"
           type="datetimerange"
           value-format="YYYY-MM-DD HH:mm:ss"
+          style="width: 300px;"
         />
       </el-form-item>
 
@@ -40,32 +41,55 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button class="query-button" type="primary">查询</el-button>
+        <el-button class="query-button" type="primary" :loading="isLoading" @click="searchOrders">查询</el-button>
       </el-form-item>
     </el-form>
 
     <div class="table-panel">
-      <el-table :data="orders" border height="100%" stripe>
+      <el-table v-loading="isLoading" :data="orders" :cell-style="{ textAlign: 'center' }" :header-cell-style="{ textAlign: 'center' }" border height="100%" stripe>
         <el-table-column min-width="210" prop="merchant">
           <template #header>
-            <button class="table-header-link" type="button" @click="merchantDialogVisible = true">商家名称</button>
+            <button class="table-header-link" type="button" @click="openMerchantDialog">商家名称</button>
           </template>
         </el-table-column>
         <el-table-column label="照片类型" min-width="88" prop="photoType" />
         <el-table-column label="状态" min-width="88">
           <template #default="{ row }">
-            <span :class="['status-text', row.statusClass]">{{ row.status }}</span>
+            <el-tag
+              class="order-status-tag"
+              :class="getStatusTagConfig(row).className"
+              :type="getStatusTagConfig(row).type"
+              effect="light"
+              round
+            >
+              {{ row.status }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="设计师" min-width="88" prop="designer" />
         <el-table-column label="订单号" min-width="260" prop="orderNo" />
         <el-table-column label="照片张数" min-width="88" prop="photoCount" />
         <el-table-column label="客户信息" min-width="88" prop="customer" />
-        <el-table-column label="备注" min-width="240" prop="remark" />
+        <el-table-column label="备注" min-width="240">
+          <template #default="{ row }">
+            <el-tooltip :content="row.remark || '-'" placement="top" popper-class="order-remark-tooltip">
+              <span class="remark-cell">{{ row.remark || '-' }}</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
         <el-table-column label="下单时间" min-width="270" prop="orderedAt" />
-        <el-table-column label="操作" min-width="88">
-          <template #default>
-            <el-button plain size="small" type="success">完工</el-button>
+        <el-table-column class-name="operation-column-cell" label="操作" min-width="88">
+          <template #default="{ row }">
+            <el-button
+              v-if="canCompleteOrder(row)"
+              plain
+              size="small"
+              type="success"
+              :loading="completingOrderId === row.id"
+              @click="completeOrder(row)"
+            >
+              完工
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -74,28 +98,37 @@
     <footer class="pagination">
       <el-pagination
         v-model:current-page="pagination.pageNo"
-        :page-size="pagination.pageSize"
+        v-model:page-size="pagination.pageSize"
+        :page-sizes="[15, 30, 45, 60]"
         :pager-count="5"
-        :total="128"
-        layout="total, prev, pager, next, jumper"
+        :total="currentTotal"
+        layout="total, sizes, prev, pager, next, jumper"
+        @current-change="loadOrders"
+        @size-change="handlePageSizeChange"
       />
     </footer>
 
     <el-dialog v-model="merchantDialogVisible" title="商家明细" class="orders-group-dialog" width="960px">
-      <el-collapse v-model="activeMerchantGroups">
-        <el-collapse-item v-for="group in merchantOrderGroups" :key="group.name" :name="group.name">
+      <el-collapse v-model="activeMerchantGroups" v-loading="isGroupLoading">
+        <el-collapse-item v-for="group in merchantOrderGroups" :key="group.groupName" :name="group.groupName">
           <template #title>
-            <span class="collapse-title">{{ group.name }}</span>
+            <span class="collapse-title">{{ group.groupName }}</span>
             <span class="collapse-count">{{ group.orders.length }} 单</span>
           </template>
 
-          <el-table :data="group.orders" border stripe>
+          <el-table :data="group.orders" :cell-style="{ textAlign: 'center' }" :header-cell-style="{ textAlign: 'center' }" border stripe>
             <el-table-column label="商家名称" min-width="120" prop="merchant" />
             <el-table-column label="客户信息" min-width="110" prop="customer" />
             <el-table-column label="订单号" min-width="150" prop="orderNo" />
             <el-table-column label="照片张数" min-width="90" prop="photoCount" />
             <el-table-column label="下单时间" min-width="180" prop="orderedAt" />
-            <el-table-column label="备注" min-width="180" prop="remark" />
+            <el-table-column label="备注" min-width="180">
+              <template #default="{ row }">
+                <el-tooltip :content="row.remark || '-'" placement="top" popper-class="order-remark-tooltip">
+                  <span class="remark-cell">{{ row.remark || '-' }}</span>
+                </el-tooltip>
+              </template>
+            </el-table-column>
           </el-table>
         </el-collapse-item>
       </el-collapse>
@@ -104,13 +137,67 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
-import type {
-  DesignerOrder,
-  DesignerOrdersFilters,
-  DesignerOrdersPagination,
-  DesignerOrderSourceRow,
-} from '../types/DesignerOrders'
+import { onMounted, reactive, ref } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { getOrderFilterOptionsApi } from '../api/adminOrders'
+import {
+  completeDesignerOrderApi,
+  getDesignerOrderListApi,
+  getDesignerOrderShopGroupsApi,
+  type DesignerOrderGroupVO,
+  type DesignerOrderRecordVO,
+} from '../api/designerOrders'
+import type { DesignerOrder, DesignerOrderGroup, DesignerOrdersFilters, DesignerOrdersPagination } from '../types/DesignerOrders'
+
+interface FilterOptionItem {
+  id?: number | string
+  name?: string
+  value?: string
+  label?: string
+}
+
+interface DesignerFilterOptions {
+  shops?: FilterOptionItem[]
+  productTypes?: FilterOptionItem[]
+  statuses?: FilterOptionItem[]
+  merchants?: string[]
+  photoTypes?: string[]
+}
+
+type StatusTagType = 'primary' | 'success' | 'info' | 'warning' | 'danger'
+
+interface StatusTagConfig {
+  type: StatusTagType
+  className: string
+}
+
+const selectableStatuses = ['未完工', '待审核', '已完工']
+const statusTagConfigMap: Record<string, StatusTagConfig> = {
+  未完工: {
+    type: 'primary',
+    className: 'is-uncompleted',
+  },
+  UNCOMPLETED: {
+    type: 'primary',
+    className: 'is-uncompleted',
+  },
+  待审核: {
+    type: 'warning',
+    className: 'is-pending-review',
+  },
+  PENDING_REVIEW: {
+    type: 'warning',
+    className: 'is-pending-review',
+  },
+  已完工: {
+    type: 'success',
+    className: 'is-completed',
+  },
+  COMPLETED: {
+    type: 'success',
+    className: 'is-completed',
+  },
+}
 
 const filters = reactive<DesignerOrdersFilters>({
   merchants: [],
@@ -122,68 +209,168 @@ const filters = reactive<DesignerOrdersFilters>({
 
 const pagination = reactive<DesignerOrdersPagination>({
   pageNo: 1,
-  pageSize: 17,
+  pageSize: 15,
 })
 
 const merchantDialogVisible = ref(false)
 const activeMerchantGroups = ref<string[]>([])
+const merchantOrderGroups = ref<DesignerOrderGroup[]>([])
+const orders = ref<DesignerOrder[]>([])
+const currentTotal = ref(0)
+const isLoading = ref(false)
+const isGroupLoading = ref(false)
+const completingOrderId = ref<DesignerOrder['id'] | null>(null)
 
-const merchantOptions = ['云帆摄影', '木石电商', '星野婚礼', '青橙影像', '森白视觉', '北岸写真']
-const photoTypeOptions = ['精修', '抠图', '调色', '排版', '证件照', '产品修图']
-const statusOptions = ['未派单', '未完工', '待审核', '已完工', '问题件', '其他']
+const merchantOptions = ref<string[]>([])
+const photoTypeOptions = ref<string[]>([])
+const statusOptions = ref<string[]>([])
 
-const source: DesignerOrderSourceRow[] = [
-  ['云帆摄影', '精修', '未派单', '林设计', 'DD20260425001', 8, '李小姐', '加急处理', '2026-04-10 09:10:00'],
-  ['木石电商', '抠图', '未完工', '陈设计', 'DD20260425002', 11, '张先生', '保持肤色自然', '2026-04-11 09:11:00'],
-  ['星野婚礼', '调色', '待审核', '周设计', 'DD20260425003', 14, '王女士', '按样片风格', '2026-04-12 09:12:00'],
-  ['青橙影像', '排版', '已完工', '王设计', 'DD20260425004', 17, '赵先生', '客户待确认', '2026-04-13 09:13:00'],
-  ['森白视觉', '证件照', '问题件', '何设计', 'DD20260425005', 20, '刘女士', '周末前交付', '2026-04-14 09:14:00'],
-  ['北岸写真', '产品修图', '其他', '赵设计', 'DD20260425006', 23, '何先生', '加急处理', '2026-04-15 09:15:00'],
-  ['拾光电商', '精修', '未派单', '林设计', 'DD20260425007', 26, '李小姐', '保持肤色自然', '2026-04-16 09:16:00'],
-  ['鹿鸣影像', '抠图', '未完工', '陈设计', 'DD20260425008', 29, '张先生', '按样片风格', '2026-04-17 09:17:00'],
-  ['云帆摄影', '调色', '待审核', '周设计', 'DD20260425009', 32, '王女士', '客户待确认', '2026-04-18 09:18:00'],
-  ['木石电商', '排版', '已完工', '王设计', 'DD20260425010', 8, '赵先生', '周末前交付', '2026-04-19 09:19:00'],
-  ['星野婚礼', '证件照', '问题件', '何设计', 'DD20260425011', 11, '刘女士', '加急处理', '2026-04-20 09:20:00'],
-  ['青橙影像', '产品修图', '其他', '赵设计', 'DD20260425012', 14, '何先生', '保持肤色自然', '2026-04-21 09:21:00'],
-  ['森白视觉', '精修', '未派单', '林设计', 'DD20260425013', 17, '李小姐', '按样片风格', '2026-04-22 09:22:00'],
-  ['北岸写真', '抠图', '未完工', '陈设计', 'DD20260425014', 20, '张先生', '客户待确认', '2026-04-23 09:23:00'],
-  ['拾光电商', '调色', '待审核', '周设计', 'DD20260425015', 23, '王女士', '周末前交付', '2026-04-24 09:24:00'],
-  ['鹿鸣影像', '排版', '已完工', '王设计', 'DD20260425016', 26, '赵先生', '加急处理', '2026-04-10 09:25:00'],
-  ['云帆摄影', '证件照', '问题件', '何设计', 'DD20260425017', 29, '刘女士', '保持肤色自然', '2026-04-11 09:26:00'],
-  ['木石电商', '精修', '未派单', '林设计', 'DD20260425018', 31, '张先生', '保持肤色自然', '2026-04-12 09:27:00'],
-  ['星野婚礼', '抠图', '未完工', '陈设计', 'DD20260425019', 34, '王女士', '按样片风格', '2026-04-13 09:28:00'],
-  ['青橙影像', '调色', '待审核', '周设计', 'DD20260425020', 37, '赵先生', '客户待确认', '2026-04-14 09:29:00'],
-]
-
-const orders: DesignerOrder[] = source.map(
-  ([merchant, photoType, status, designer, orderNo, photoCount, customer, remark, orderedAt]) => ({
-    merchant,
-    photoType,
-    status,
-    designer,
-    orderNo,
-    photoCount,
-    customer,
-    remark,
-    orderedAt,
-    statusClass: status === '未完工' || status === '已完工' ? 'blue' : '',
-  }),
-)
-
-interface OrderGroup {
-  name: string
-  orders: DesignerOrder[]
+const getErrorMessage = (error: unknown, fallback: string) => {
+  return error instanceof Error && error.message ? error.message : fallback
 }
 
-const merchantOrderGroups = computed<OrderGroup[]>(() => {
-  const groupMap = new Map<string, DesignerOrder[]>()
+const toNumber = (value: unknown) => {
+  const nextValue = Number(value)
+  return Number.isFinite(nextValue) ? nextValue : 0
+}
 
-  orders.forEach((order) => {
-    const groupName = order.merchant || '未填写'
-    groupMap.set(groupName, [...(groupMap.get(groupName) ?? []), order])
-  })
+const normalizeStatusClass = (record: DesignerOrderRecordVO) => {
+  if (record.statusClass) return record.statusClass
 
-  return Array.from(groupMap, ([name, groupedOrders]) => ({ name, orders: groupedOrders }))
+  return record.status === '未完工' || record.status === '已完工' || record.statusName === '未完工' || record.statusName === '已完工'
+    ? 'blue'
+    : ''
+}
+
+const getStatusTagConfig = (order: DesignerOrder) => {
+  return statusTagConfigMap[order.statusCode ?? ''] ?? statusTagConfigMap[order.status] ?? statusTagConfigMap['未完工']
+}
+
+const normalizeOrder = (record: DesignerOrderRecordVO): DesignerOrder => ({
+  id: record.id,
+  merchant: record.merchant ?? record.shopName ?? '',
+  photoType: record.photoType ?? record.productTypeName ?? '',
+  status: record.statusName ?? record.status ?? '',
+  statusCode: record.status,
+  designer: record.designer ?? record.designerName ?? '',
+  orderNo: record.orderNo,
+  photoCount: toNumber(record.photoCount),
+  customer: record.customer ?? record.customerInfo ?? '',
+  remark: record.remark ?? '',
+  orderedAt: record.orderedAt ?? '',
+  completedAt: record.completedAt ?? '',
+  statusClass: normalizeStatusClass(record),
+})
+
+const normalizeGroup = (group: DesignerOrderGroupVO): DesignerOrderGroup => ({
+  groupId: group.groupId,
+  groupName: group.groupName ?? group.name ?? '未填写',
+  orders: (group.orders ?? []).map(normalizeOrder),
+})
+
+const buildQuery = () => ({
+  pageNo: pagination.pageNo,
+  pageSize: pagination.pageSize,
+  merchants: filters.merchants.length ? filters.merchants : undefined,
+  photoTypes: filters.photoTypes.length ? filters.photoTypes : undefined,
+  statuses: filters.statuses.length ? filters.statuses : undefined,
+  dateRange: filters.dateRange.length ? filters.dateRange : undefined,
+  startTime: filters.dateRange?.[0] || undefined,
+  endTime: filters.dateRange?.[1] || undefined,
+  keyword: filters.keyword.trim() || undefined,
+})
+
+const loadFilterOptions = async () => {
+  try {
+    const options = (await getOrderFilterOptionsApi()) as DesignerFilterOptions
+    const merchants = options.merchants ?? (options.shops ?? []).map(item => item.name).filter((name): name is string => Boolean(name))
+    const photoTypes = options.photoTypes ?? (options.productTypes ?? []).map(item => item.name).filter((name): name is string => Boolean(name))
+
+    merchantOptions.value = merchants
+    photoTypeOptions.value = photoTypes
+    statusOptions.value = selectableStatuses
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '筛选项加载失败'))
+  }
+}
+
+const loadOrders = async () => {
+  isLoading.value = true
+
+  try {
+    const result = await getDesignerOrderListApi(buildQuery())
+    orders.value = result.records.map(normalizeOrder)
+    currentTotal.value = result.total
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '订单列表加载失败'))
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const searchOrders = () => {
+  pagination.pageNo = 1
+  void loadOrders()
+}
+
+const handlePageSizeChange = () => {
+  pagination.pageNo = 1
+  void loadOrders()
+}
+
+const canCompleteOrder = (order: DesignerOrder) => {
+  return order.status === '未完工' || order.statusCode === 'UNCOMPLETED'
+}
+
+const completeOrder = async (order: DesignerOrder) => {
+  try {
+    await ElMessageBox.confirm(`确定提交订单“${order.orderNo}”完工吗？`, '完工确认', {
+      confirmButtonText: '确认完工',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+  } catch {
+    return
+  }
+
+  completingOrderId.value = order.id
+
+  try {
+    await completeDesignerOrderApi({ id: order.id })
+    ElMessage.success('订单已提交完工')
+    await loadOrders()
+
+    if (merchantDialogVisible.value) {
+      await loadMerchantGroups()
+    }
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '提交完工失败'))
+  } finally {
+    completingOrderId.value = null
+  }
+}
+
+const loadMerchantGroups = async () => {
+  isGroupLoading.value = true
+
+  try {
+    merchantOrderGroups.value = (await getDesignerOrderShopGroupsApi()).map(normalizeGroup)
+    activeMerchantGroups.value = merchantOrderGroups.value.map(group => group.groupName)
+  } catch (error) {
+    ElMessage.error(getErrorMessage(error, '商家明细加载失败'))
+  } finally {
+    isGroupLoading.value = false
+  }
+}
+
+const openMerchantDialog = () => {
+  merchantDialogVisible.value = true
+  void loadMerchantGroups()
+}
+
+onMounted(() => {
+  void loadFilterOptions()
+  void loadOrders()
 })
 
 </script>
@@ -218,14 +405,12 @@ const merchantOrderGroups = computed<OrderGroup[]>(() => {
 
 .orders-filter {
   display: grid;
-  grid-template-columns: 177px 177px 177px 532px 221px 62px;
+  grid-template-columns: 177px 177px 177px 400px 221px 62px;
   gap: 10px;
   align-items: center;
   min-height: 0;
   padding: 0 22px;
   margin: 0;
-  background: #f8fbff;
-  border-bottom: 1px solid #dfe8f4;
 
   :deep(.el-form-item) {
     margin: 0;
@@ -254,7 +439,7 @@ const merchantOrderGroups = computed<OrderGroup[]>(() => {
 
 .date-form-item {
   :deep(.el-date-editor) {
-    width: 100%;
+    width: 400px;
     height: 33px;
   }
 }
@@ -298,12 +483,6 @@ const merchantOrderGroups = computed<OrderGroup[]>(() => {
   }
 }
 
-.status-text {
-  &.blue {
-    color: #0057ff;
-  }
-}
-
 .table-header-link {
   padding: 0;
   color: #0057ff;
@@ -318,6 +497,49 @@ const merchantOrderGroups = computed<OrderGroup[]>(() => {
   &:focus-visible {
     color: #003fbd;
     text-decoration: underline;
+  }
+}
+
+.remark-cell {
+  display: -webkit-box;
+  max-height: 60px;
+  overflow: hidden;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+:deep(.operation-column-cell) {
+  text-align: left !important;
+}
+
+.order-status-tag {
+  min-width: 58px;
+  justify-content: center;
+  border-color: var(--status-tag-border-color);
+  color: var(--status-tag-text-color);
+  background: var(--status-tag-bg-color);
+  font-weight: 700;
+
+  &.is-uncompleted {
+    --status-tag-text-color: #1d4ed8;
+    --status-tag-bg-color: #eff6ff;
+    --status-tag-border-color: #bfdbfe;
+  }
+
+  &.is-pending-review {
+    --status-tag-text-color: #b45309;
+    --status-tag-bg-color: #fffbeb;
+    --status-tag-border-color: #fde68a;
+  }
+
+  &.is-completed {
+    --status-tag-text-color: #15803d;
+    --status-tag-bg-color: #f0fdf4;
+    --status-tag-border-color: #bbf7d0;
   }
 }
 
@@ -397,41 +619,9 @@ const merchantOrderGroups = computed<OrderGroup[]>(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #526584;
 
-  :deep(.el-pagination) {
-    --el-pagination-button-color: #1d5de7;
-    --el-pagination-hover-color: #1f5fe8;
-    font-weight: 500;
-  }
-
-  :deep(.el-pager li),
-  :deep(.btn-prev),
-  :deep(.btn-next) {
-    min-width: 34px;
-    height: 31px;
-    border: 1px solid #dbe5f4;
-    border-radius: 9px;
-  }
-
-  :deep(.el-pager li.is-active) {
-    color: #fff;
-    background: #1f5fe8;
-    border-color: #1f5fe8;
-  }
-
-  :deep(.el-pagination__goto),
-  :deep(.el-pagination__classifier) {
-    color: #526584;
-  }
-
-  :deep(.el-pagination__editor.el-input) {
-    width: 50px;
-  }
-
-  :deep(.el-pagination__editor .el-input__wrapper) {
-    height: 31px;
-    box-shadow: 0 0 0 1px #dbe5f4 inset;
+  :deep(.el-pager) {
+    gap: 6px;
   }
 }
 

@@ -1,4 +1,5 @@
 import type { AllOrder, AllOrderSummary } from '../types/AllOrders'
+import { formatPriceNumber, normalizePriceNumberOrZero } from './price'
 
 export interface DetailStatValues {
   photoCount: number
@@ -11,9 +12,10 @@ export interface SummaryStatValues extends DetailStatValues {
   profit: number
 }
 
-const sumBy = <T>(items: T[], selector: (item: T) => number) => items.reduce((total, item) => total + selector(item), 0)
+const sumBy = <T>(items: T[], selector: (item: T) => number) =>
+  normalizePriceNumberOrZero(items.reduce((total, item) => total + selector(item), 0))
 
-export const formatOrderStatNumber = (value: number) => new Intl.NumberFormat('zh-CN').format(value)
+export const formatOrderStatNumber = (value: number) => formatPriceNumber(value)
 
 export const createDetailStatValues = (orders: AllOrder[]): DetailStatValues => ({
   photoCount: sumBy(orders, (order) => order.photoCount),

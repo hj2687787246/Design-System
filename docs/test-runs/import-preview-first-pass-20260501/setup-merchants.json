@@ -1,0 +1,70 @@
+﻿{
+  "createMerchantA": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:53:16",
+        "id": 17,
+        "merchantName": "QA导入商户A_20260501055034",
+        "photoTypes": [
+          {
+            "acceptPrice": "12.34",
+            "dispatchPrice": "5.67",
+            "id": 32,
+            "photoType": "QA导入类型A_20260501055034"
+          },
+          {
+            "acceptPrice": "12.34",
+            "dispatchPrice": "5.67",
+            "id": 33,
+            "photoType": "QA导入类型B_20260501055034"
+          }
+        ]
+      },
+      "message": "新增商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"新增商户成功\",\"data\":{\"id\":17,\"merchantName\":\"QA导入商户A_20260501055034\",\"photoTypes\":[{\"id\":32,\"photoType\":\"QA导入类型A_20260501055034\",\"acceptPrice\":\"12.34\",\"dispatchPrice\":\"5.67\"},{\"id\":33,\"photoType\":\"QA导入类型B_20260501055034\",\"acceptPrice\":\"12.34\",\"dispatchPrice\":\"5.67\"}],\"createdAt\":\"2026-05-01 05:53:16\"}}"
+  },
+  "createMerchantB": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "createdAt": "2026-05-01 05:53:16",
+        "id": 18,
+        "merchantName": "QA导入商户B_20260501055034",
+        "photoTypes": [
+          {
+            "acceptPrice": "12.34",
+            "dispatchPrice": "5.67",
+            "id": 34,
+            "photoType": "QA导入类型A_20260501055034"
+          }
+        ]
+      },
+      "message": "新增商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"新增商户成功\",\"data\":{\"id\":18,\"merchantName\":\"QA导入商户B_20260501055034\",\"photoTypes\":[{\"id\":34,\"photoType\":\"QA导入类型A_20260501055034\",\"acceptPrice\":\"12.34\",\"dispatchPrice\":\"5.67\"}],\"createdAt\":\"2026-05-01 05:53:16\"}}"
+  },
+  "ids": {
+    "merchantAId": 17,
+    "merchantBId": 18
+  },
+  "runAt": "2026-04-30T21:53:14.174Z",
+  "testData": {
+    "merchantA": "QA导入商户A_20260501055034",
+    "merchantB": "QA导入商户B_20260501055034",
+    "orderA": "QA_IMPORT_20260501055034_A",
+    "orderB": "QA_IMPORT_20260501055034_B",
+    "photoA": "QA导入类型A_20260501055034",
+    "photoB": "QA导入类型B_20260501055034",
+    "stamp": "20260501055034"
+  },
+  "validations": {
+    "merchantACreated": true,
+    "merchantBCreated": true
+  }
+}

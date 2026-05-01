@@ -1,0 +1,13 @@
+﻿{
+  "case": "AUTH-011",
+  "finalUrl": "http://127.0.0.1:5187/orders",
+  "heading": "全部订单",
+  "tokenPresent": true,
+  "user": {
+    "id": 1,
+    "realName": "超级管理员",
+    "role": "ADMIN",
+    "status": "ENABLED",
+    "username": "admin"
+  }
+}

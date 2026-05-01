@@ -1,0 +1,45 @@
+﻿[
+  {
+    "aria": null,
+    "idx": 0,
+    "placeholder": "请输入商户名称关键词",
+    "value": "测试商户957"
+  },
+  {
+    "aria": null,
+    "idx": 1,
+    "placeholder": null,
+    "value": ""
+  },
+  {
+    "aria": "页",
+    "idx": 2,
+    "placeholder": null,
+    "value": "1"
+  },
+  {
+    "aria": null,
+    "idx": 3,
+    "placeholder": "请输入商户名称",
+    "value": ""
+  },
+  {
+    "aria": null,
+    "idx": 4,
+    "placeholder": "请输入照片类型",
+    "value": ""
+  },
+  {
+    "aria": null,
+    "idx": 5,
+    "placeholder": "请输入默认接单价",
+    "value": ""
+  },
+  {
+    "aria": null,
+    "idx": 6,
+    "placeholder": "请输入默认派单价",
+    "value": ""
+  }
+]
+

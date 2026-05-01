@@ -1,0 +1,10 @@
+﻿{
+  "case": "ACCOUNT-003",
+  "dialogVisible": true,
+  "errors": [
+    "登录密码不能少于6位字符"
+  ],
+  "expectedErrorPresent": true,
+  "passwordValueLength": 5,
+  "url": "http://127.0.0.1:5187/orders"
+}

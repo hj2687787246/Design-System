@@ -1,0 +1,65 @@
+﻿{
+  "case": "USER-016",
+  "dispatcherCount": 0,
+  "reason": "需要 DISPATCHER Token，但当前用户列表没有 DISPATCHER 账号，且当前环境不创建新账号。",
+  "roles": [
+    {
+      "id": 28,
+      "realName": "设计师强sir",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "shejishi"
+    },
+    {
+      "id": 27,
+      "realName": "diaodu",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "123456"
+    },
+    {
+      "id": 25,
+      "realName": "UI浏览器测试设计师",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "ui_e2e_click_designer_20260429110952"
+    },
+    {
+      "id": 24,
+      "realName": "UI浏览器测试设计师",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "ui_e2e_click_designer_20260429110632"
+    },
+    {
+      "id": 23,
+      "realName": "UI设计师二号",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "ui_e2e_designer2"
+    },
+    {
+      "id": 22,
+      "realName": "UI设计师一号",
+      "role": "DESIGNER",
+      "status": "ENABLED",
+      "username": "ui_e2e_designer1"
+    },
+    {
+      "id": 20,
+      "realName": "强sir",
+      "role": "ADMIN",
+      "status": "ENABLED",
+      "username": "admintest"
+    },
+    {
+      "id": 1,
+      "realName": "超级管理员",
+      "role": "ADMIN",
+      "status": "ENABLED",
+      "username": "admin"
+    }
+  ],
+  "status": "BLOCKED",
+  "userListHttpStatus": 200
+}

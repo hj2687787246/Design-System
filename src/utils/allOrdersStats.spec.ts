@@ -3,6 +3,7 @@ import { createDetailStatValues, createSummaryStatValues, formatOrderStatNumber 
 
 const detailOrders: AllOrder[] = [
   {
+    id: 1,
     index: 1,
     merchant: '云帆摄影',
     photoType: '精修',
@@ -22,6 +23,7 @@ const detailOrders: AllOrder[] = [
 
 const summaryOrders: AllOrderSummary[] = [
   {
+    id: 'summary-1',
     index: 1,
     merchant: '云帆摄影',
     orderCount: 2,

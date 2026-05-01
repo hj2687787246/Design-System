@@ -65,6 +65,25 @@ button {
   min-height: 100vh;
 }
 
+.el-popper.is-dark,
+.el-popper.is-light,
+.el-tooltip__popper {
+  width: 300px;
+  max-width: 300px;
+  white-space: normal;
+  word-break: break-all;
+}
+
+.account-menu-popper.el-popper.is-light {
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.account-menu-popper .el-dropdown-menu__item {
+  justify-content: center;
+}
+
 .login-page {
   position: relative;
   isolation: isolate;

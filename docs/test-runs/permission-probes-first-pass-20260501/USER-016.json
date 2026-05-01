@@ -1,0 +1,21 @@
+﻿{
+  "case": "USER-016",
+  "contentType": "application/json",
+  "expected": "HTTP 403 或业务码 403",
+  "httpStatus": 403,
+  "json": {
+    "code": 403,
+    "data": null,
+    "message": "无权限"
+  },
+  "passed": true,
+  "text": "{\"code\":403,\"message\":\"无权限\",\"data\":null}",
+  "tokenUser": {
+    "id": 29,
+    "realName": "调度账号1",
+    "role": "DISPATCHER",
+    "status": "ENABLED",
+    "username": "diaodu"
+  },
+  "url": "http://127.0.0.1:5187/orders"
+}

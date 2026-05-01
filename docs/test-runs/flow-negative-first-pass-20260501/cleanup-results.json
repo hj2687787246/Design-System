@@ -1,0 +1,183 @@
+﻿{
+  "deleteMerchant": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除商户成功\",\"data\":true}"
+  },
+  "deleteOrder": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除订单成功\",\"data\":true}"
+  },
+  "deleteUser": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": true,
+      "message": "删除账号成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"删除账号成功\",\"data\":true}"
+  },
+  "ids": {
+    "merchantId": 15,
+    "orderId": 21,
+    "userId": 34
+  },
+  "merchantAfterDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "merchantBeforeDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:44:26",
+            "id": 15,
+            "merchantName": "QA非法流转商户_20260501054402",
+            "photoTypes": [
+              {
+                "acceptPrice": "7.77",
+                "dispatchPrice": "2.22",
+                "id": 30,
+                "photoType": "QA非法流转类型_20260501054402"
+              }
+            ]
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询商户成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询商户成功\",\"data\":{\"records\":[{\"id\":15,\"merchantName\":\"QA非法流转商户_20260501054402\",\"photoTypes\":[{\"id\":30,\"photoType\":\"QA非法流转类型_20260501054402\",\"acceptPrice\":\"7.77\",\"dispatchPrice\":\"2.22\"}],\"createdAt\":\"2026-05-01 05:44:26\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "orderAfterDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "orderBeforeDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "completedAt": "",
+            "customer": "QA非法流转客户_20260501054402",
+            "designer": "QA流转设计师_20260501054402",
+            "dispatchPrice": 2.22,
+            "dispatchTotal": 2.22,
+            "id": 21,
+            "index": 1,
+            "merchant": "QA非法流转商户_20260501054402",
+            "orderNo": "QA_FLOW_NEG_20260501054402",
+            "orderedAt": "2026-05-01 05:44:00",
+            "photoCount": 1,
+            "photoType": "QA非法流转类型_20260501054402",
+            "receivePrice": 7.77,
+            "receiveTotal": 7.77,
+            "remark": "QA negative flow",
+            "status": "待审核"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询全部订单成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询全部订单成功\",\"data\":{\"records\":[{\"id\":21,\"merchant\":\"QA非法流转商户_20260501054402\",\"photoType\":\"QA非法流转类型_20260501054402\",\"status\":\"待审核\",\"designer\":\"QA流转设计师_20260501054402\",\"orderNo\":\"QA_FLOW_NEG_20260501054402\",\"photoCount\":1,\"customer\":\"QA非法流转客户_20260501054402\",\"remark\":\"QA negative flow\",\"orderedAt\":\"2026-05-01 05:44:00\",\"completedAt\":\"\",\"index\":1,\"receivePrice\":7.77,\"receiveTotal\":7.77,\"dispatchPrice\":2.22,\"dispatchTotal\":2.22}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "runAt": "2026-04-30T21:47:45.495Z",
+  "userAfterDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [],
+        "total": 0
+      },
+      "message": "查询账号成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询账号成功\",\"data\":{\"records\":[],\"total\":0,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "userBeforeDelete": {
+    "httpStatus": 200,
+    "json": {
+      "code": 200,
+      "data": {
+        "pageNo": 1,
+        "pageSize": 15,
+        "records": [
+          {
+            "createdAt": "2026-05-01 05:44:26",
+            "id": 34,
+            "lastLoginAt": "2026-05-01 05:47:29",
+            "realName": "QA流转设计师_20260501054402",
+            "role": "DESIGNER",
+            "status": "ENABLED",
+            "updatedAt": "2026-05-01 05:47:28",
+            "username": "qa_flow_designer_20260501054402"
+          }
+        ],
+        "total": 1
+      },
+      "message": "查询账号成功"
+    },
+    "ok": true,
+    "text": "{\"code\":200,\"message\":\"查询账号成功\",\"data\":{\"records\":[{\"username\":\"qa_flow_designer_20260501054402\",\"realName\":\"QA流转设计师_20260501054402\",\"role\":\"DESIGNER\",\"status\":\"ENABLED\",\"id\":34,\"lastLoginAt\":\"2026-05-01 05:47:29\",\"createdAt\":\"2026-05-01 05:44:26\",\"updatedAt\":\"2026-05-01 05:47:28\"}],\"total\":1,\"pageNo\":1,\"pageSize\":15}}"
+  },
+  "validations": {
+    "merchantDeleteSuccess": true,
+    "merchantExistedBeforeCleanup": true,
+    "merchantRemoved": true,
+    "orderDeleteSuccess": true,
+    "orderExistedBeforeCleanup": true,
+    "orderRemoved": true,
+    "userDeleteSuccess": true,
+    "userExistedBeforeCleanup": true,
+    "userRemoved": true
+  }
+}

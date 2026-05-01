@@ -31,7 +31,7 @@ export const getProductTypeListApi = (params?: ProductTypeListParams) =>
     url: '/product-types',
     method: 'GET',
     params,
-  })
+  }) as unknown as Promise<PageResponse<ProductTypeVO>>
 
 /** 创建照片类型，并可同时创建该类型下的动态字段。 */
 export const createProductTypeApi = (data: SaveProductTypeParams) =>
@@ -62,4 +62,3 @@ export const getProductTypeFieldsApi = (id: number) =>
     url: `/product-types/${id}/fields`,
     method: 'GET',
   })
-
